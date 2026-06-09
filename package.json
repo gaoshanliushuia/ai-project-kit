@@ -1,0 +1,27 @@
+{
+  "name": "ai-project-kit",
+  "version": "0.1.0",
+  "description": "AI-assisted software project framework initializer.",
+  "type": "commonjs",
+  "files": [
+    "ai-project-kit.js",
+    "templates",
+    "README.md"
+  ],
+  "scripts": {
+    "init": "node ai-project-kit.js",
+    "init:force": "node ai-project-kit.js -f"
+  },
+  "keywords": [
+    "ai",
+    "project-template",
+    "software-engineering",
+    "workflow",
+    "initializer"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
