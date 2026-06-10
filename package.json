@@ -9,8 +9,7 @@
     "README.md"
   ],
   "scripts": {
-    "init": "node ai-project-kit.js",
-    "init:force": "node ai-project-kit.js -f"
+    "init": "node ai-project-kit.js"
   },
   "keywords": [
     "ai",

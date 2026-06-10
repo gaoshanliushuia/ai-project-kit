@@ -154,13 +154,7 @@ Examples:
   npm run init ../my-project delivery
 
 Options:
-  -n, --project-name   Optional project name inserted into generated README.md.
-  -f, --force          Overwrite existing files. Existing files are skipped by default.
   -h, --help           Show this help.
-
-Note:
-  If your npm version does not pass arguments without "--", use:
-  npm run init -- ../my-project req
 `;
 }
 
@@ -168,8 +162,6 @@ function parseArgs(argv) {
   const args = {
     target: undefined,
     group: "all",
-    projectName: undefined,
-    force: false,
     help: false,
   };
 
@@ -179,10 +171,6 @@ function parseArgs(argv) {
     const token = tokens.shift();
     if (token === "--help" || token === "-h") {
       args.help = true;
-    } else if (token === "--force" || token === "-f") {
-      args.force = true;
-    } else if (token === "--project-name" || token === "-n") {
-      args.projectName = readValue(token, tokens);
     } else if (token.startsWith("-")) {
       throw new Error(`Unknown option: ${token}`);
     } else {
@@ -217,14 +205,6 @@ function parseArgs(argv) {
   return args;
 }
 
-function readValue(option, tokens) {
-  const value = tokens.shift();
-  if (!value || value.startsWith("-")) {
-    throw new Error(`Missing value for ${option}`);
-  }
-  return value;
-}
-
 function copyFileIfNeeded(source, target, force) {
   if (fs.existsSync(target) && !force) {
     return;
@@ -257,15 +237,9 @@ function writeKeepFile(directory) {
   }
 }
 
-function buildProjectReadme(templateRoot, projectName) {
+function buildProjectReadme(templateRoot) {
   const readmePath = path.join(templateRoot, "README.md");
-  let content = fs.readFileSync(readmePath, "utf8");
-  if (!projectName) {
-    return content;
-  }
-
-  const marker = "这是通过 ai-project-kit 初始化后的项目入口说明。";
-  return content.replace(marker, `${marker}\n\n当前项目：${projectName}`);
+  return fs.readFileSync(readmePath, "utf8");
 }
 
 function materializeWorkspace(groupRoot, groupName) {
@@ -291,12 +265,12 @@ function initProject(options) {
   fs.mkdirSync(targetRoot, { recursive: true });
 
   const readmeTarget = path.join(targetRoot, "README.md");
-  if (!fs.existsSync(readmeTarget) || options.force) {
-    fs.writeFileSync(readmeTarget, buildProjectReadme(templateRoot, options.projectName), "utf8");
+  if (!fs.existsSync(readmeTarget)) {
+    fs.writeFileSync(readmeTarget, buildProjectReadme(templateRoot), "utf8");
   }
 
   for (const group of groups) {
-    copyTree(path.join(templateRoot, group), path.join(targetRoot, group), options.force);
+    copyTree(path.join(templateRoot, group), path.join(targetRoot, group), false);
     materializeWorkspace(path.join(targetRoot, group), group);
   }
 
