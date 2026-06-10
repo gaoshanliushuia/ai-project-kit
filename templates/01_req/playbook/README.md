@@ -12,7 +12,7 @@ playbook/
 ## 阶段关系
 
 ```text
-01_requirements  ->  workspace/handoff/  ->  02_build/imports/req/
+workspace/01_requirements/  ->  需求基线  ->  02_build 对应阶段引用
 ```
 
 AI 治理标准见 `05_gov/playbook/01_governance/`。
@@ -20,10 +20,10 @@ AI 治理标准见 `05_gov/playbook/01_governance/`。
 ## 使用原则
 
 - 需求项必须有编号、验收条件和负责人。
-- 基线签发前不得 handoff。
+- 基线签发前不得交接给实施组作为正式输入。
 - AI 可生成初稿，关键结论由负责人确认；留痕写入 `05_gov/workspace/`。
 
 ## 阶段通过标准
 
 - 需求基线、原型基线、追踪矩阵已就绪。
-- handoff 目录中有清晰版本号与签发记录。
+- 需求基线材料中有清晰版本号、签发记录和交接说明。

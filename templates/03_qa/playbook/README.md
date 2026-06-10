@@ -15,7 +15,7 @@ playbook/
 ```text
 引用需求 + 实施基线
     -> 01_testing <-> 02_changes
-    -> feedback/to-build/ -> 02_build
+    -> workspace/02_changes/ 回传事项 -> 02_build
 ```
 
 AI 治理见 `05_gov/playbook/01_governance/`。

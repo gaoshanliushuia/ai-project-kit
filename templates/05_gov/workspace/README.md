@@ -2,26 +2,18 @@
 
 `workspace` 保存跨组的 AI 治理留痕与 Metrics。
 
-## 目录
+## 本组目录
 
 ```text
 workspace/
-├── 01_usage-log/        按组/阶段记录 AI 使用（标注 01_req / 02_build / 03_qa / 04_delivery）
-├── 02_prompt-reviews/   Prompt 审查
-├── 03_security-checks/    数据安全与脱敏检查
-├── 04_code-reviews/       AI 辅助代码 Review
-├── 05_output-acceptance/  AI 输出人工验收
-├── 06_metrics/            跨组 AI 参与度与研发活动指标
-└── 07_retrospective/      经验复盘与最佳实践
+└── 01_governance/    AI 使用治理与质量证据
 ```
 
-## 推荐文件
+## 总体原则
 
-- `01_usage-log/ai-usage-log.md`
-- `02_prompt-reviews/prompt-review-record.md`
-- `05_output-acceptance/ai-output-acceptance.md`
-- `06_metrics/project-ai-metrics.md`
-- `07_retrospective/ai-governance-retrospective.md`
+- 默认只创建到 `01_governance/` 这一层；更细的子目录按本级 README 建议按需创建。
+- 治理目录用于沉淀 AI 使用记录、Prompt 审查、安全检查、代码审查、输出验收、Metrics 和复盘。
+- 每条记录应能关联到业务编号（REQ、DES、DEF、CR）及来源组。
 
 ## Metrics 建议统计
 
@@ -32,6 +24,3 @@ workspace/
 
 Metrics 不追求精确工时，重点观察 AI 成熟度。
 
-## 与各业务组的关系
-
-业务组负责交付物；`05_gov` 负责 AI 相关的过程合规与质量证据。每条记录应能关联到业务编号（REQ、DES、DEF、CR）及来源组。

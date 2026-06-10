@@ -6,9 +6,9 @@ AI 治理组服务于 `01_req`、`02_build`、`03_qa`、`04_delivery`，统一�
 
 | 编号 | 目录 | 职责 |
 |------|------|------|
-| 01 | `01_governance`（playbook） | AI 使用治理与质量约束 |
+| 01 | `01_governance` | AI 使用治理与质量约束 |
 
-workspace 按留痕类型分目录，不再与 playbook 一一编号对应。
+`workspace` 与 `playbook` 对应，默认只创建 `01_governance/`；具体留痕类型作为本级 README 中的建议子目录按需创建。
 
 ## 目录结构
 
@@ -19,23 +19,18 @@ workspace 按留痕类型分目录，不再与 playbook 一一编号对应。
 │   └── 01_governance/
 └── workspace/
     ├── README.md
-    ├── 01_usage-log/
-    ├── 02_prompt-reviews/
-    ├── 03_security-checks/
-    ├── 04_code-reviews/
-    ├── 05_output-acceptance/
-    ├── 06_metrics/
-    └── 07_retrospective/
+    └── 01_governance/
 ```
 
 ## 与其他组的关系
 
 - **不替代** 业务交付；业务材料仍在 `01_req` / `02_build` / `03_qa` / `04_delivery`。
 - **统一登记** 各组使用 AI 的关键活动、审查结论与验收记录。
-- **Metrics** 在 `06_metrics/` 汇总跨组数据，观察 AI 成熟度。
+- **Metrics** 在 `workspace/01_governance/` 内建议的 Metrics 子目录汇总跨组数据，观察 AI 成熟度。
 
 ## 建议阅读顺序
 
 1. 本文件
 2. `playbook/01_governance/README.md`
 3. `workspace/README.md`
+4. `workspace/01_governance/README.md`

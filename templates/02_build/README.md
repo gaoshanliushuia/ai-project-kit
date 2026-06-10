@@ -20,13 +20,12 @@ AI 治理统一在 `05_gov/` 维护。
 02_build/
 ├── playbook/    01_architecture … 05_release
 └── workspace/
-    ├── 01_architecture/ … 05_release/
-    └── imports/req/    ← 引用 01_req 的 handoff
+    └── 01_architecture/ … 05_release/
 ```
 
 ## 协作
 
-- **上游**：`imports/req/` 中的需求基线版本。
-- **下游接收**：`03_qa/workspace/feedback/to-build/`。
+- **上游**：在对应阶段目录内记录引用的需求基线版本。
+- **下游接收**：测试变更组在 `03_qa/workspace/02_changes/` 中形成结构化回传事项。
 - **交付输出**：发布完成后，将版本、部署记录、测试结论、已知问题和验收范围交给 `04_delivery`。
 - **治理**：AI 活动在 `05_gov/workspace/` 登记。

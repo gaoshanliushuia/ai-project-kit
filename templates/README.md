@@ -8,7 +8,7 @@ Version: v0.1.0
 
 - 将 ai-project-kit 定位为 AI Project Framework（AI 辅助研发框架），而不是 Prompt 集合。
 - 按五大工作组划分协作边界：需求、实施、测试变更、交付、AI 治理。
-- 帮助各角色在独立目录中并行工作，并通过 handoff、feedback、delivery 和 governance 完成交接与留痕。
+- 帮助各角色在独立目录中并行工作，并通过阶段目录内的基线、回传、交付和治理记录完成交接与留痕。
 - 交付组独立管理面向用户验收的资产；AI 治理统一沉淀在 `05_gov`。
 
 ## 五大工作组
@@ -36,8 +36,6 @@ Version: v0.1.0
 ```text
 playbook/ & workspace/
 └── 01_requirements/     需求收集与需求分析
-
-workspace/handoff/       向实施组输出的基线出口
 ```
 
 ### 02_build（实施组）
@@ -49,8 +47,6 @@ playbook/ & workspace/
 ├── 03_database/         数据库设计
 ├── 04_codebase/         代码实现与工程管理
 └── 05_release/          版本发布与迭代
-
-workspace/imports/req/   引用需求组 handoff
 ```
 
 ### 03_qa（测试变更组）
@@ -59,8 +55,6 @@ workspace/imports/req/   引用需求组 handoff
 playbook/ & workspace/
 ├── 01_testing/          测试与质量保证
 └── 02_changes/          变更与配置管理
-
-workspace/feedback/to-build/   向实施组回传缺陷与变更
 ```
 
 ### 04_delivery（交付组）
@@ -75,39 +69,30 @@ playbook/ & workspace/
 ### 05_gov（AI 治理组）
 
 ```text
-playbook/
+playbook/ & workspace/
 └── 01_governance/       AI 使用治理与质量约束
-
-workspace/
-├── 01_usage-log/        各组 AI 使用记录
-├── 02_prompt-reviews/   Prompt 审查
-├── 03_security-checks/  安全检查
-├── 04_code-reviews/     AI 辅助代码 Review
-├── 05_output-acceptance/ AI 输出验收
-├── 06_metrics/          跨组 AI 参与度指标
-└── 07_retrospective/    经验复盘
 ```
 
 ## 组间协作
 
 ```text
-01_req/workspace/handoff/
+01_req/workspace/01_requirements/
         │
         ▼
-02_build/workspace/imports/req/
+02_build/workspace/01_architecture/ … 05_release/
         │
         ▼
-03_qa/workspace/feedback/to-build/  ──►  02_build
+03_qa/workspace/02_changes/  ──►  02_build
         │
         ▼
 04_delivery/workspace/01_delivery/
         │
         ▼
-05_gov/workspace/（AI 治理留痕）
+05_gov/workspace/01_governance/（AI 治理留痕）
 ```
 
-- **需求组**：基线签发后写入 `handoff/`。
-- **实施组**：只读 `imports/req/`，完成架构、设计、代码和发布。
+- **需求组**：基线签发后写入 `workspace/01_requirements/` 内建议的基线或交接子目录。
+- **实施组**：在对应阶段目录内记录需求基线来源，完成架构、设计、代码和发布。
 - **测试变更组**：结构化回传缺陷、测试结论和变更影响。
 - **交付组**：面向用户验收沉淀交付包、手册、培训、验收和运维资料。
 - **治理组**：各组凡使用 AI 的关键活动，在 `05_gov` 登记。
@@ -131,7 +116,7 @@ workspace/
 1. 阅读本文件，确认五大组职责与交接关系。
 2. 进入对应组目录，阅读组内 `README.md`。
 3. 再读该组 `playbook/README.md` 与 `workspace/README.md`。
-4. 使用 AI 时同步维护 `05_gov/workspace/` 留痕。
+4. 使用 AI 时同步维护 `05_gov/workspace/01_governance/` 留痕。
 
 ## 初始化具体项目建议
 
@@ -162,7 +147,7 @@ AI工作/
 2. 在该目录下分别创建五个阶段仓库目录。
 3. 每个阶段目录独立执行 `git init` 或绑定独立远程仓库。
 4. 按阶段复制对应的 `01_req`、`02_build`、`03_qa`、`04_delivery`、`05_gov` 模板内容。
-5. 通过 `handoff/`、`imports/`、`feedback/`、交付清单和治理留痕目录传递阶段成果，不直接混写其他阶段仓库。
+5. 通过阶段目录内的基线、引用记录、回传记录、交付清单和治理留痕传递阶段成果，不直接混写其他阶段仓库。
 
 ## 版本说明
 

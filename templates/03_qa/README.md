@@ -20,12 +20,11 @@ AI 治理统一在 `05_gov/` 维护。
 ├── playbook/    01_testing, 02_changes
 └── workspace/
     ├── 01_testing/
-    ├── 02_changes/
-    └── feedback/to-build/    ← 向 02_build 回传
+    └── 02_changes/
 ```
 
 ## 协作
 
 - **引用上游**：需求基线、实施组基线。
-- **回传**：`feedback/to-build/` 写入缺陷、变更与回归结论。
+- **回传**：在 `workspace/02_changes/` 内建议的回传目录或回传记录中写入缺陷、变更与回归结论。
 - **治理**：AI 活动在 `05_gov/workspace/` 登记。

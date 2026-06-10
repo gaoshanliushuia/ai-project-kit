@@ -19,4 +19,4 @@ playbook/
 
 - 关键 AI 使用场景均有记录。
 - AI 生成的重要输出已完成审查与验收。
-- `06_metrics/` 能反映跨组 AI 参与度。
+- `workspace/01_governance/` 内建议的 Metrics 子目录能反映跨组 AI 参与度。
