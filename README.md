@@ -51,7 +51,7 @@ npm run init .tmp/bootstrap-test all
 
 ## 初始化后的结构
 
-初始化完整项目后，目标目录会得到五个顶层工作组：
+初始化完整项目后，目标目录会得到五个顶层工作组，以及 AI 工具同步脚本（与工作组平级）：
 
 ```text
 项目根目录/
@@ -60,8 +60,19 @@ npm run init .tmp/bootstrap-test all
 ├── 02_build/              实施组
 ├── 03_qa/                 测试变更组
 ├── 04_delivery/           交付组
-└── 05_gov/                AI 治理组
+├── 05_gov/                AI 治理组
+├── cursor-script/         Cursor rule/skill 同步（默认初始化）
+└── qoder-script/          Qoder rule/skill 同步预留目录（默认初始化）
 ```
+
+初始化后可在项目根执行：
+
+```bash
+npm --prefix cursor-script run sync:rule
+npm --prefix cursor-script run sync:skill
+```
+
+将 playbook 中的规则与技能同步到 `.cursor/`。详见 `cursor-script/README.md`。
 
 如果按阶段分仓库管理，也可以把五个工作组分别放在独立仓库或独立目录中：
 
@@ -81,13 +92,17 @@ ai-project-kit/
 ├── README.md              项目总纲与开源协作入口
 ├── package.json           npm 包配置
 ├── ai-project-kit.js      初始化脚本
-├── templates/             初始化模板源头
+├── templates/             工作组模板源头
 │   ├── README.md          生成到目标项目的入口说明
 │   ├── 01_req/            需求组
 │   ├── 02_build/          实施组
 │   ├── 03_qa/             测试变更组
 │   ├── 04_delivery/       交付组
 │   └── 05_gov/            AI 治理组
+└── scripts/               AI 工具脚本（初始化时复制到目标项目根）
+    ├── README.md
+    ├── cursor-script/     Cursor rule/skill 同步
+    └── qoder-script/      Qoder rule/skill 同步预留目录
 ```
 
 ## 设计思想

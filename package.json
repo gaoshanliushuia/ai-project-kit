@@ -6,6 +6,7 @@
   "files": [
     "ai-project-kit.js",
     "templates",
+    "scripts",
     "README.md"
   ],
   "scripts": {

@@ -91,6 +91,8 @@ function copyTree(sourceRoot, targetRoot) {
     throw new Error(`Missing template directory: ${sourceRoot}`);
   }
 
+  fs.mkdirSync(targetRoot, { recursive: true });
+
   for (const entry of fs.readdirSync(sourceRoot, { withFileTypes: true })) {
     const source = path.join(sourceRoot, entry.name);
     const target = path.join(targetRoot, entry.name);
@@ -107,9 +109,26 @@ function buildProjectReadme(templateRoot) {
   return fs.readFileSync(readmePath, "utf8");
 }
 
+function copyToolScripts(sourceRoot, targetRoot) {
+  if (!fs.existsSync(sourceRoot)) {
+    return [];
+  }
+
+  const copied = [];
+  for (const entry of fs.readdirSync(sourceRoot, { withFileTypes: true })) {
+    if (!entry.isDirectory()) {
+      continue;
+    }
+    copyTree(path.join(sourceRoot, entry.name), path.join(targetRoot, entry.name));
+    copied.push(entry.name);
+  }
+  return copied;
+}
+
 function initProject(options) {
   const repoRoot = __dirname;
   const templateRoot = path.join(repoRoot, "templates");
+  const scriptsRoot = path.join(repoRoot, "scripts");
   const targetRoot = path.resolve(options.target);
   const groups = GROUP_ALIASES[options.group];
 
@@ -124,7 +143,13 @@ function initProject(options) {
     copyTree(path.join(templateRoot, group), path.join(targetRoot, group));
   }
 
-  console.log(`Initialized groups ${groups.join(", ")} at: ${targetRoot}`);
+  const toolScripts = copyToolScripts(scriptsRoot, targetRoot);
+
+  const summary = [`Initialized groups ${groups.join(", ")} at: ${targetRoot}`];
+  if (toolScripts.length > 0) {
+    summary.push(`Initialized tool scripts: ${toolScripts.join(", ")}`);
+  }
+  console.log(summary.join("\n"));
 }
 
 function main() {
