@@ -1,0 +1,313 @@
+:root {
+  color: #172033;
+  font-family:
+    Inter, "PingFang SC", "Microsoft YaHei", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #eef3fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.prototype-shell {
+  min-height: 100vh;
+}
+
+.login-page {
+  align-items: center;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(45, 108, 223, 0.28), transparent 28%),
+    linear-gradient(135deg, #172033, #263f73);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+  max-width: 760px;
+  padding: 40px;
+  width: 100%;
+}
+
+.eyebrow {
+  color: #4974d8;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+.muted {
+  color: #6d7687;
+  line-height: 1.7;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.field span {
+  color: #526070;
+  font-size: 14px;
+}
+
+input,
+select {
+  background: #f7f9fd;
+  border: 1px solid #dce4f2;
+  border-radius: 12px;
+  color: #172033;
+  min-height: 42px;
+  padding: 0 14px;
+}
+
+.role-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 28px;
+}
+
+.role-card {
+  background: #f7f9ff;
+  border: 1px solid #dce6fb;
+  border-radius: 18px;
+  color: #172033;
+  min-height: 128px;
+  padding: 20px;
+  text-align: left;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.role-card:hover {
+  border-color: #4974d8;
+  box-shadow: 0 12px 30px rgba(73, 116, 216, 0.2);
+  transform: translateY(-2px);
+}
+
+.role-card strong,
+.role-card span {
+  display: block;
+}
+
+.role-card span {
+  color: #6d7687;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #172033;
+  color: #fff;
+  padding: 24px;
+}
+
+.brand {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.brand-mark {
+  align-items: center;
+  background: #4f7df0;
+  border-radius: 14px;
+  display: inline-flex;
+  font-weight: 800;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.brand strong,
+.brand span {
+  display: block;
+}
+
+.brand span {
+  color: #9da8bd;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+nav {
+  display: grid;
+  gap: 10px;
+}
+
+nav button {
+  background: transparent;
+  border: 0;
+  border-radius: 14px;
+  color: #c8d2e3;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px;
+  text-align: left;
+}
+
+nav button.active,
+nav button:hover {
+  background: #263858;
+  color: #fff;
+}
+
+nav small {
+  color: #91a2c0;
+}
+
+.content {
+  padding: 28px;
+}
+
+.topbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.secondary {
+  background: #fff;
+  border: 1px solid #dce4f2;
+  border-radius: 12px;
+  color: #263858;
+  padding: 10px 16px;
+}
+
+.page-card {
+  background: #fff;
+  border: 1px solid #dfe7f5;
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(23, 32, 51, 0.08);
+  padding: 28px;
+}
+
+.dashboard {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 24px;
+}
+
+.dashboard article {
+  background: #f7f9fd;
+  border: 1px solid #e4ebf7;
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.dashboard strong,
+.dashboard span,
+.dashboard small {
+  display: block;
+}
+
+.dashboard span {
+  color: #2d6cdf;
+  font-size: 32px;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+.dashboard small {
+  color: #6d7687;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0 16px;
+}
+
+.toolbar button {
+  background: #2d6cdf;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  min-height: 42px;
+  padding: 0 16px;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 16px;
+  width: 100%;
+}
+
+th {
+  background: #f3f6fb;
+  color: #526070;
+  font-size: 13px;
+  text-align: left;
+}
+
+td,
+th {
+  border-bottom: 1px solid #e7edf6;
+  padding: 14px 12px;
+}
+
+td {
+  color: #243047;
+}
+
+.hint {
+  background: #fff8e6;
+  border: 1px solid #f3d992;
+  border-radius: 14px;
+  color: #72520f;
+  margin-top: 18px;
+  padding: 14px;
+}
+
+@media (max-width: 900px) {
+  .app-layout,
+  .role-grid,
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+}

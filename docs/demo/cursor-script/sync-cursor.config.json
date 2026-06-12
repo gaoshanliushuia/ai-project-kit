@@ -1,0 +1,222 @@
+{
+  "rules": [
+    {
+      "id": "requirements-governance",
+      "source": "01_req/playbook/01_requirements/rules/RULE.md",
+      "target": ".cursor/rules/requirements-governance.mdc",
+      "description": "需求收集与需求分析阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": ["01_req/**"]
+    },
+    {
+      "id": "architecture-governance",
+      "source": "02_build/playbook/01_architecture/rules/RULE.md",
+      "target": ".cursor/rules/architecture-governance.mdc",
+      "description": "系统架构设计阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": [
+        "02_build/playbook/01_architecture/**",
+        "02_build/workspace/01_architecture/**"
+      ]
+    },
+    {
+      "id": "design-governance",
+      "source": "02_build/playbook/02_design/rules/RULE.md",
+      "target": ".cursor/rules/design-governance.mdc",
+      "description": "详细设计阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": [
+        "02_build/playbook/02_design/**",
+        "02_build/workspace/02_design/**"
+      ]
+    },
+    {
+      "id": "database-governance",
+      "source": "02_build/playbook/03_database/rules/RULE.md",
+      "target": ".cursor/rules/database-governance.mdc",
+      "description": "数据库设计阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": [
+        "02_build/playbook/03_database/**",
+        "02_build/workspace/03_database/**"
+      ]
+    },
+    {
+      "id": "codebase-governance",
+      "source": "02_build/playbook/04_codebase/rules/RULE.md",
+      "target": ".cursor/rules/codebase-governance.mdc",
+      "description": "代码实现与工程管理阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": [
+        "02_build/playbook/04_codebase/**",
+        "02_build/workspace/04_codebase/**"
+      ]
+    },
+    {
+      "id": "coding-standards",
+      "source": "02_build/playbook/04_codebase/rules/CODING_RULE.md",
+      "target": ".cursor/rules/coding-standards.mdc",
+      "description": "代码编写规范 — 命名、大小写、注释、文件名、分包及 Java/Vue/JavaScript/HTML 通用约束",
+      "alwaysApply": false,
+      "globs": [
+        "**/*.java",
+        "**/*.vue",
+        "**/*.js",
+        "**/*.html",
+        "02_build/playbook/04_codebase/**",
+        "02_build/workspace/04_codebase/**"
+      ]
+    },
+    {
+      "id": "release-governance",
+      "source": "02_build/playbook/05_release/rules/RULE.md",
+      "target": ".cursor/rules/release-governance.mdc",
+      "description": "版本发布与迭代阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": [
+        "02_build/playbook/05_release/**",
+        "02_build/workspace/05_release/**"
+      ]
+    },
+    {
+      "id": "testing-governance",
+      "source": "03_qa/playbook/01_testing/rules/RULE.md",
+      "target": ".cursor/rules/testing-governance.mdc",
+      "description": "测试与质量保证阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": [
+        "03_qa/playbook/01_testing/**",
+        "03_qa/workspace/01_testing/**"
+      ]
+    },
+    {
+      "id": "changes-governance",
+      "source": "03_qa/playbook/02_changes/rules/RULE.md",
+      "target": ".cursor/rules/changes-governance.mdc",
+      "description": "变更与配置管理阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": [
+        "03_qa/playbook/02_changes/**",
+        "03_qa/workspace/02_changes/**"
+      ]
+    },
+    {
+      "id": "delivery-governance",
+      "source": "04_delivery/playbook/01_delivery/rules/RULE.md",
+      "target": ".cursor/rules/delivery-governance.mdc",
+      "description": "项目交付与验收阶段 — 进入条件、执行、评审与 AI 协同约束",
+      "alwaysApply": false,
+      "globs": ["04_delivery/**"]
+    },
+    {
+      "id": "ai-governance",
+      "source": "05_gov/playbook/01_governance/rules/RULE.md",
+      "target": ".cursor/rules/ai-governance.mdc",
+      "description": "AI 使用治理与质量约束 — 进入条件、执行、评审与留痕要求",
+      "alwaysApply": false,
+      "globs": ["05_gov/**"]
+    }
+  ],
+  "skills": [
+    {
+      "id": "requirements-analysis",
+      "source": "01_req/playbook/01_requirements/skills/SKILL.md",
+      "target": ".cursor/skills/requirements-analysis/SKILL.md",
+      "name": "requirements-analysis",
+      "description": "Executes the 需求收集与需求分析 phase workflow: stakeholder identification, requirement breakdown, traceability matrix, and handoff baseline (REQ prefix). Use when working in 01_req/**, or when the user mentions requirements analysis, REQ artifacts, acceptance criteria, scope boundaries, or ai-project-kit requirements phase.",
+      "governanceRule": "requirements-governance",
+      "ruleSource": "01_req/playbook/01_requirements/rules/RULE.md",
+      "playbookBase": "01_req/playbook/01_requirements"
+    },
+    {
+      "id": "architecture-design",
+      "source": "02_build/playbook/01_architecture/skills/SKILL.md",
+      "target": ".cursor/skills/architecture-design/SKILL.md",
+      "name": "architecture-design",
+      "description": "Executes the 系统架构设计 phase workflow: architecture drivers, system boundaries, technical decisions, NFR strategies, and risk validation (ARCH prefix). Use when working in 02_build/playbook/01_architecture/** or 02_build/workspace/01_architecture/**, or when the user mentions system architecture, ARCH artifacts, integration boundaries, or NFR design.",
+      "governanceRule": "architecture-governance",
+      "ruleSource": "02_build/playbook/01_architecture/rules/RULE.md",
+      "playbookBase": "02_build/playbook/01_architecture"
+    },
+    {
+      "id": "detailed-design",
+      "source": "02_build/playbook/02_design/skills/SKILL.md",
+      "target": ".cursor/skills/detailed-design/SKILL.md",
+      "name": "detailed-design",
+      "description": "Executes the 详细设计 phase workflow: module design, API contracts, state machines, exception handling, and design traceability (DES prefix). Use when working in 02_build/playbook/02_design/** or 02_build/workspace/02_design/**, or when the user mentions detailed design, DES artifacts, interface contracts, or state flows.",
+      "governanceRule": "design-governance",
+      "ruleSource": "02_build/playbook/02_design/rules/RULE.md",
+      "playbookBase": "02_build/playbook/02_design"
+    },
+    {
+      "id": "database-design",
+      "source": "02_build/playbook/03_database/skills/SKILL.md",
+      "target": ".cursor/skills/database-design/SKILL.md",
+      "name": "database-design",
+      "description": "Executes the 数据库设计 phase workflow: data modeling, field dictionaries, indexes, migration scripts, and rollback planning (DB prefix). Use when working in 02_build/playbook/03_database/** or 02_build/workspace/03_database/**, or when the user mentions database design, DB artifacts, schema migration, or data modeling.",
+      "governanceRule": "database-governance",
+      "ruleSource": "02_build/playbook/03_database/rules/RULE.md",
+      "playbookBase": "02_build/playbook/03_database"
+    },
+    {
+      "id": "codebase-implementation",
+      "source": "02_build/playbook/04_codebase/skills/SKILL.md",
+      "target": ".cursor/skills/codebase-implementation/SKILL.md",
+      "name": "codebase-implementation",
+      "description": "Executes the 代码实现与工程管理 phase workflow: dev task breakdown, implementation, testing evidence, code review, and handoff to QA/release (CODE prefix). Use when working in 02_build/playbook/04_codebase/** or 02_build/workspace/04_codebase/**, or when the user mentions code implementation, CODE artifacts, build/test records, or dev handoff.",
+      "governanceRule": "codebase-governance",
+      "ruleSource": "02_build/playbook/04_codebase/rules/RULE.md",
+      "playbookBase": "02_build/playbook/04_codebase"
+    },
+    {
+      "id": "release-management",
+      "source": "02_build/playbook/05_release/skills/SKILL.md",
+      "target": ".cursor/skills/release-management/SKILL.md",
+      "name": "release-management",
+      "description": "Executes the 版本发布与迭代 phase workflow: release planning, deployment checklists, rollback preparation, release validation, and post-release review (REL prefix). Use when working in 02_build/playbook/05_release/** or 02_build/workspace/05_release/**, or when the user mentions release management, REL artifacts, deployment, or rollback.",
+      "governanceRule": "release-governance",
+      "ruleSource": "02_build/playbook/05_release/rules/RULE.md",
+      "playbookBase": "02_build/playbook/05_release"
+    },
+    {
+      "id": "quality-assurance",
+      "source": "03_qa/playbook/01_testing/skills/SKILL.md",
+      "target": ".cursor/skills/quality-assurance/SKILL.md",
+      "name": "quality-assurance",
+      "description": "Executes the 测试与质量保证 phase workflow: test strategy, test cases, execution records, defect tracking, regression, and release recommendation (QA prefix). Use when working in 03_qa/playbook/01_testing/** or 03_qa/workspace/01_testing/**, or when the user mentions QA testing, test cases, defects, regression, or quality reports.",
+      "governanceRule": "testing-governance",
+      "ruleSource": "03_qa/playbook/01_testing/rules/RULE.md",
+      "playbookBase": "03_qa/playbook/01_testing"
+    },
+    {
+      "id": "change-management",
+      "source": "03_qa/playbook/02_changes/skills/SKILL.md",
+      "target": ".cursor/skills/change-management/SKILL.md",
+      "name": "change-management",
+      "description": "Executes the 变更与配置管理 phase workflow: change registration, impact analysis, approval tracking, implementation sync, and closure (CR prefix). Use when working in 03_qa/playbook/02_changes/** or 03_qa/workspace/02_changes/**, or when the user mentions change management, CR artifacts, impact analysis, or change approval.",
+      "governanceRule": "changes-governance",
+      "ruleSource": "03_qa/playbook/02_changes/rules/RULE.md",
+      "playbookBase": "03_qa/playbook/02_changes"
+    },
+    {
+      "id": "delivery-acceptance",
+      "source": "04_delivery/playbook/01_delivery/skills/SKILL.md",
+      "target": ".cursor/skills/delivery-acceptance/SKILL.md",
+      "name": "delivery-acceptance",
+      "description": "Executes the 项目交付与验收 phase workflow: delivery package, acceptance checklist, training materials, ops handoff, and legacy issue management (DEL prefix). Use when working in 04_delivery/**, or when the user mentions project delivery, acceptance, DEL artifacts, user manuals, or ops handoff.",
+      "governanceRule": "delivery-governance",
+      "ruleSource": "04_delivery/playbook/01_delivery/rules/RULE.md",
+      "playbookBase": "04_delivery/playbook/01_delivery"
+    },
+    {
+      "id": "ai-governance",
+      "source": "05_gov/playbook/01_governance/skills/SKILL.md",
+      "target": ".cursor/skills/ai-governance/SKILL.md",
+      "name": "ai-governance",
+      "description": "Executes the AI 使用治理与质量约束 phase workflow: AI usage logging, prompt review, security checks, output acceptance, metrics, and retrospective (GOV prefix). Use when working in 05_gov/**, or when the user mentions AI governance, GOV artifacts, prompt review, AI audit, or compliance checks.",
+      "governanceRule": "ai-governance",
+      "ruleSource": "05_gov/playbook/01_governance/rules/RULE.md",
+      "playbookBase": "05_gov/playbook/01_governance"
+    }
+  ]
+}
