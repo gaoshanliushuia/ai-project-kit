@@ -1,6 +1,6 @@
 # 可运行代码示例
 
-本目录是 `04_codebase` 阶段的可运行代码示例，用于展示 AI-Agent 在读取 `implementation-plan-v1.0.md` 后，应该生成什么类型的工程产物。
+本目录是 `04_codebase` 阶段的可运行代码示例，用于展示 AI-Agent 在读取 `../02_design/implementation/` 下开发实现计划后，应该生成什么类型的工程产物。
 
 它不是完整生产系统，而是一个最小可运行前后端 Demo，覆盖：
 
@@ -66,9 +66,9 @@ GET  /api/scores
 POST /api/scores
 ```
 
-## 与 implementation-plan 的关系
+## 与开发实现计划的关系
 
-本示例重点落地 `implementation-plan-v1.0.md` 中的以下要求：
+本示例重点落地 `../02_design/implementation/` 中的以下要求：
 
 - 统一响应结构。
 - 角色菜单。

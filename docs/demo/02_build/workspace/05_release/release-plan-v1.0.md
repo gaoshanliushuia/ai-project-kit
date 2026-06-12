@@ -8,7 +8,8 @@
 
 | 输入产物 | 来源 |
 |----------|------|
-| 开发任务清单 | `02_build/workspace/04_codebase/implementation-plan-v1.0.md` |
+| 开发实现计划 | `02_build/workspace/02_design/implementation/implementation-plan-v1.0.md` |
+| 模块级开发实现文档 | `02_build/workspace/02_design/implementation/modules/` |
 | 测试报告 | `03_qa/workspace/01_testing/test-report-v1.0.md` |
 | 缺陷与变更回传记录 | `03_qa/workspace/02_changes/defect-change-log-v1.0.md` |
 

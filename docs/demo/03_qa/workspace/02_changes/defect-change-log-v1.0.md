@@ -10,7 +10,8 @@
 |----------|------|
 | 测试质量报告 | `03_qa/workspace/01_testing/test-report-v1.0.md` |
 | 软件功能说明文档 | `02_build/workspace/02_design/software-function-spec-v1.0.md` |
-| 编码实现说明 | `02_build/workspace/04_codebase/implementation-plan-v1.0.md` |
+| 开发实现计划 | `02_build/workspace/02_design/implementation/implementation-plan-v1.0.md` |
+| 模块级开发实现文档 | `02_build/workspace/02_design/implementation/modules/` |
 
 ## 2. 缺陷回传
 
@@ -40,7 +41,7 @@
 实施组需要更新：
 
 - `02_build/workspace/02_design/software-function-spec-v1.0.md` 中权限过滤和成绩校验说明。
-- `02_build/workspace/04_codebase/implementation-plan-v1.0.md` 中 CODE-003、CODE-007 的实现重点。
+- `02_build/workspace/02_design/implementation/modules/CODE-003-student-management.md` 和 `02_build/workspace/02_design/implementation/modules/CODE-007-score-management.md` 中的实现重点。
 - 修复后通知测试组执行回归测试。
 
 ## 6. 缺陷处理闭环
