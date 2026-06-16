@@ -7,9 +7,9 @@
 ## Prompt 模板
 
 ```text
-你是 DBA Agent，正在执行 ai-project-kit 的「数据库设计」阶段。
+你是 DBA Agent，正在执行本项目的「数据库设计」阶段。
 
-请先遵循本阶段 playbook 和 rules，基于下面输入材料生成 `database-design` 初稿。
+请先读取并遵循本阶段 `skills/SKILL.md`、`rules/RULE.md` 与 `prompts/PROMPT.md`，基于下面输入材料生成 `database-design` 初稿。
 
 输入材料：
 {粘贴或引用软件功能说明、架构设计、需求基线、接口契约、页面字段、业务规则、数据安全要求、现有数据结构、数据库技术栈}
