@@ -10,13 +10,14 @@ docs/demo/
 ├── 01_req/
 ├── 02_build/
 ├── 03_qa/
-├── 04_delivery/
-├── 05_gov/
+├── 04_change/
+├── 05_delivery/
+├── 06_gov/
 ├── cursor-script/
 └── qoder-script/
 ```
 
-其中 `docs/demo/README.md` 是 Demo 项目自己的入口说明，和五大工作组平级；本文件是 `docs` 级别的实施指导手册。
+其中 `docs/demo/README.md` 是 Demo 项目自己的入口说明，和六大工作组平级；本文件是 `docs` 级别的实施指导手册。
 
 ## 1. 案例背景
 
@@ -34,15 +35,16 @@ docs/demo/
 
 ## 2. 总体工作机制
 
-`ai-project-kit` 把项目资产拆分为五大工作组：
+`ai-project-kit` 把项目资产拆分为六大工作组：
 
 | 工作组 | 目录 | 主要职责 |
 |--------|------|----------|
-| 需求组 | `demo/01_req/` | 需求收集、需求分析、原型、需求基线 |
+| 需求组 | `demo/01_req/` | 需求输入、原型、需求基线 |
 | 实施组 | `demo/02_build/` | 架构、详细设计、数据库、编码、发布 |
-| 测试变更组 | `demo/03_qa/` | 测试验证、缺陷管理、变更回传 |
-| 交付组 | `demo/04_delivery/` | 验收、交付包、用户手册、培训、运维交接 |
-| AI 治理组 | `demo/05_gov/` | AI 使用留痕、输出验收、安全检查、复盘 |
+| 测试组 | `demo/03_qa/` | 测试验证、质量报告 |
+| 变更管理组 | `demo/04_change/` | 缺陷与正式变更登记、影响分析 |
+| 交付组 | `demo/05_delivery/` | 验收、交付包、用户手册、培训、运维交接 |
+| AI 治理组 | `demo/06_gov/` | AI 使用留痕、输出验收、安全检查、复盘 |
 
 推荐执行链路：
 
@@ -55,7 +57,8 @@ docs/demo/
   -> 软件功能说明
   -> 数据库设计
   -> 编码实现
-  -> 测试与缺陷回传
+  -> 测试与质量报告
+  -> 变更登记与闭环
   -> 版本发布
   -> 交付验收
   -> AI 治理复盘
@@ -63,7 +66,7 @@ docs/demo/
 
 ## 3. 阶段 1：需求输入与调研
 
-目录：`demo/01_req/workspace/01_requirements/01_inputs/`
+目录：`demo/01_req/workspace/01_inputs/`
 
 案例产物：`interview-notes.md`
 
@@ -109,7 +112,7 @@ docs/demo/
 
 ## 4. 阶段 2：范围、角色与需求分析
 
-目录：`demo/01_req/workspace/01_requirements/02_analysis/`
+目录：`demo/01_req/workspace/01_inputs/`（范围与角色分析材料与访谈纪要同层存放，案例为 `scope-and-roles.md`）
 
 案例产物：`scope-and-roles.md`
 
@@ -155,7 +158,7 @@ docs/demo/
 
 ## 5. 阶段 3：原型设计与可运行演示
 
-目录：`demo/01_req/workspace/01_requirements/03_prototypes/`
+目录：`demo/01_req/workspace/02_prototypes/`
 
 案例产物：
 
@@ -187,7 +190,7 @@ docs/demo/
 原型运行：
 
 ```bash
-cd docs/demo/01_req/workspace/01_requirements/03_prototypes/prototype-app
+cd docs/demo/01_req/workspace/02_prototypes/prototype-app
 npm start
 ```
 
@@ -220,7 +223,7 @@ http://localhost:4173
 
 ## 6. 阶段 4：需求规格、追踪与基线
 
-目录：`demo/01_req/workspace/01_requirements/04_requirements/`、`05_traceability/`、`06_reviews/`、`07_baseline/`
+目录：`demo/01_req/workspace/03_baseline/`
 
 案例产物：
 
@@ -472,15 +475,16 @@ http://localhost:4173
 - 发现 AI 频繁生成错误代码时，应回头优化详细设计、Prompt 和编码规则。
 - 对复杂逻辑应先写测试或伪代码，再让 AI 辅助实现。
 
-## 11. 阶段 9：测试验证与缺陷变更回传
+## 11. 阶段 9：测试验证
 
-目录：`demo/03_qa/workspace/01_testing/`、`demo/03_qa/workspace/02_changes/`
+目录：`demo/03_qa/workspace/01_testing/`
 
 案例产物：
 
 - `test-plan-and-cases-v1.0.md`
 - `test-report-v1.0.md`
-- `defect-change-log-v1.0.md`
+
+缺陷与正式变更登记见阶段 9b。
 
 ### 前置条件
 
@@ -494,7 +498,7 @@ http://localhost:4173
 |------|------|
 | 测试人员 | 设计用例、执行测试、登记缺陷 |
 | 测试负责人 | 判断质量结论和发布建议 |
-| 变更管理员 | 管理缺陷回传、影响分析和关闭 |
+| 变更管理员 | 在 `04_change` 组配合登记缺陷关联的正式变更 |
 | AI-Agent | 生成用例初稿、异常场景、缺陷影响分析和报告初稿 |
 
 ### 主要动作
@@ -502,7 +506,7 @@ http://localhost:4173
 - 根据 REQ、DES 和接口契约生成测试用例。
 - 执行功能、权限、异常和边界测试。
 - 登记缺陷并关联 REQ、DES、CODE。
-- 对影响设计或需求的事项进入变更管理。
+- 对影响设计或需求的事项在 `04_change/workspace/` 登记变更。
 - 输出质量报告和发布建议。
 
 ### 输出产物
@@ -510,8 +514,7 @@ http://localhost:4173
 - 测试计划。
 - 测试用例。
 - 测试执行记录。
-- 缺陷清单。
-- 变更回传记录。
+- 缺陷清单（同步登记到 `04_change/workspace/`）。
 - 质量报告。
 
 ### 量化标准
@@ -523,9 +526,26 @@ http://localhost:4173
 
 ### 优化与变通
 
-- 测试阶段发现的问题不应只在聊天里沟通，应结构化回传。
+- 测试阶段发现的问题不应只在聊天里沟通，应结构化回传到 `04_change`。
 - 需求变更和缺陷修复要分开管理，避免混淆范围变化和质量问题。
 - 对 AI 生成的测试用例要人工补充真实业务路径和边界数据。
+
+## 11b. 阶段 9b：变更与缺陷闭环
+
+目录：`demo/04_change/workspace/`
+
+案例产物：`defect-change-log-v1.0.md`
+
+### 主要动作
+
+- 登记变更来源、影响范围、审批与实施结论。
+- 关联 REQ、DES、CODE、QA 编号。
+- 通知受影响工作组更新正式文档或基线引用。
+
+### 输出产物
+
+- 变更与缺陷回传记录。
+- 影响分析与关闭证明。
 
 ## 12. 阶段 10：版本发布
 
@@ -579,7 +599,7 @@ http://localhost:4173
 
 ## 13. 阶段 11：交付验收
 
-目录：`demo/04_delivery/workspace/01_delivery/`
+目录：`demo/05_delivery/workspace/01_delivery/`
 
 案例产物：`delivery-acceptance-package-v1.0.md`
 
@@ -631,7 +651,7 @@ http://localhost:4173
 
 ## 14. 阶段 12：AI 治理与复盘
 
-目录：`demo/05_gov/workspace/01_governance/`
+目录：`demo/06_gov/workspace/01_governance/`
 
 案例产物：`ai-governance-log-v1.0.md`
 
@@ -689,7 +709,8 @@ http://localhost:4173
 | 详细设计 | 需求、原型、架构已完成 | 软件功能说明、接口、权限规则 | 数据库、编码、测试引用 DES |
 | 数据库设计 | 数据对象和规则已明确 | 表结构、字段字典、DDL | 编码和测试准备数据 |
 | 编码实现 | 功能说明和数据库设计已完成 | 代码任务、构建记录、已知问题 | 测试执行和缺陷定位 |
-| 测试变更 | 可测试版本已提供 | 测试报告、缺陷、变更回传 | 发布判断和实施修复 |
+| 测试 | 可测试版本已提供 | 测试报告、缺陷清单 | 变更组登记；发布判断 |
+| 变更管理 | 测试或业务提出变更 | 变更记录、影响分析 | 实施组与需求组同步 |
 | 版本发布 | 测试结论已明确 | 发布包、部署说明、验证记录 | 交付验收引用 |
 | 交付验收 | 发布版本已形成 | 验收、手册、运维交接 | 项目归档或下一轮迭代 |
 | AI 治理 | 各阶段使用 AI | AI 留痕、审查结论、复盘 | 框架持续优化 |
@@ -703,7 +724,7 @@ http://localhost:4173
 - **积累 skills**：把岗位执行方法沉淀为 `skills/SKILL.md`，例如需求分析、架构设计、代码生成、测试设计。
 - **积累 prompts**：把高频 AI 提示词沉淀为 `prompts/PROMPT.md`，降低不同人员使用 AI 的差异。
 - **允许轻量化**：小项目可以合并部分文档，但不能丢失输入、输出、责任人、评审和交接关系。
-- **允许分仓或分目录**：大项目可以按五大工作组分仓管理，小项目可以放在同一仓库。
+- **允许分仓或分目录**：大项目可以按六大工作组分仓管理，小项目可以放在同一仓库。
 - **变更必须留痕**：需求、设计、数据库、代码、测试和发布的关键变更不能只靠口头沟通。
 - **AI 输出必须验收**：AI 生成内容只能作为初稿、检查或辅助实现，正式结论必须人工确认。
 

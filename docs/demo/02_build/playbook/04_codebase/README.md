@@ -12,7 +12,7 @@
 
 ## 执行动作
 
-- 根据 `02_build/workspace/02_design/implementation/` 下的总入口、全局要求和模块级实现文档生成代码。
+- 根据 `02_build/workspace/02_design/common/` 下的公共设计文件，以及 `02_build/workspace/02_design/modules/` 下的模块级设计与实现文档生成代码。
 - 按模块级实现文档执行开发任务，并建立代码变更与需求/设计的映射。
 - 编写业务代码、接口代码、数据访问、配置和自动化脚本。
 - 完成单元测试、静态检查、依赖检查和本地构建。
@@ -39,7 +39,7 @@
 
 ## 交接给下一阶段
 
-交给测试和发布阶段的材料必须包括版本分支、构建方式、配置项、已知问题、变更点、测试入口和回滚注意事项。实现计划文档应继续引用 `02_build/workspace/02_design/implementation/`，不复制到代码阶段工作区。
+交给测试和发布阶段的材料必须包括版本分支、构建方式、配置项、已知问题、变更点、测试入口和回滚注意事项。公共设计文件应继续引用 `02_build/workspace/02_design/common/`，模块级实现说明继续引用 `02_build/workspace/02_design/modules/`，不复制到代码阶段工作区。
 
 ## AI 协同建议
 
@@ -49,4 +49,5 @@
 
 ## Prompt 使用
 
-本阶段的代码生成 Prompt 放在 `prompts/CODE_GENERATION_PROMPT.md`。它负责读取 `02_build/workspace/02_design/implementation/` 下的开发实现计划、全局实现要求和单个模块级开发实现文档，并生成实际代码、脚本、测试和运行说明。
+本阶段的代码生成 Prompt 放在 `prompts/CODE_GENERATION_PROMPT.md`。它负责读取 `02_build/workspace/02_design/common/` 下的公共设计文件，以及 `02_build/workspace/02_design/modules/` 下的单个模块级设计与实现文档，并生成实际代码、脚本、测试和运行说明。
+

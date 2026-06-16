@@ -7,9 +7,9 @@
 ## Prompt 模板
 
 ```text
-你是 Architect Agent，正在执行 ai-project-kit 的「系统架构设计」阶段。
+你是 Architect Agent，正在执行本项目的「系统架构设计」阶段。
 
-请先遵循本阶段 playbook 和 rules，基于下面输入材料生成系统架构设计初稿。
+请先读取并遵循本阶段 `skills/SKILL.md`、`rules/RULE.md` 与 `prompts/PROMPT.md`，基于下面输入材料生成系统架构设计初稿。
 
 输入材料：
 {粘贴或引用需求基线、需求追踪矩阵、原型说明、非功能需求、外部系统约束、部署环境、团队技术栈、运维要求、风险或待确认问题}

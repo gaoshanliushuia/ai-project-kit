@@ -8,9 +8,9 @@
 
 | 输入产物 | 来源 |
 |----------|------|
-| 需求基线 v1.0 | `01_req/workspace/01_requirements/07_baseline/requirements-baseline-v1.0.md` |
-| 页面原型说明 v1.0 | `01_req/workspace/01_requirements/03_prototypes/prototype-notes-v1.0.md` |
-| 需求追踪矩阵 v1.0 | `01_req/workspace/01_requirements/05_traceability/requirements-traceability-v1.0.md` |
+| 需求基线 v1.0 | `01_req/workspace/03_baseline/requirements-baseline-v1.0.md` |
+| 页面原型说明 v1.0 | `01_req/workspace/02_prototypes/prototype-notes-v1.0.md` |
+| 需求追踪矩阵 v1.0 | `01_req/workspace/03_baseline/requirements-traceability-v1.0.md` |
 
 ## 2. 架构目标
 

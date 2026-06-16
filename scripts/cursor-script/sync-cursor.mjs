@@ -6,8 +6,8 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "..");
-const CONFIG_PATH = join(__dirname, "sync-cursor.config.json");
+const DEFAULT_ROOT = resolve(__dirname, "..");
+const DEFAULT_CONFIG_PATH = join(__dirname, "sync-cursor.config.json");
 
 const ONLY_VALUES = new Set(["rules", "skills"]);
 
@@ -18,10 +18,30 @@ function parseArgs(argv) {
     dryRun: false,
     force: false,
     checkClean: false,
+    configPath: DEFAULT_CONFIG_PATH,
+    root: process.env.AI_PROJECT_ROOT
+      ? resolve(process.env.AI_PROJECT_ROOT)
+      : DEFAULT_ROOT,
   };
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
+    if (arg === "--config") {
+      const value = argv[++i];
+      if (!value) {
+        throw new Error("--config 需要配置文件路径");
+      }
+      result.configPath = resolve(value);
+      continue;
+    }
+    if (arg === "--root") {
+      const value = argv[++i];
+      if (!value) {
+        throw new Error("--root 需要项目根目录路径");
+      }
+      result.root = resolve(value);
+      continue;
+    }
     if (arg === "--only") {
       const value = argv[++i];
       if (!value || !ONLY_VALUES.has(value)) {
@@ -55,11 +75,11 @@ function parseArgs(argv) {
   return result;
 }
 
-function loadConfig() {
-  if (!existsSync(CONFIG_PATH)) {
-    throw new Error(`找不到配置文件: ${CONFIG_PATH}`);
+function loadConfig(configPath) {
+  if (!existsSync(configPath)) {
+    throw new Error(`找不到配置文件: ${configPath}`);
   }
-  return JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
+  return JSON.parse(readFileSync(configPath, "utf8"));
 }
 
 function hashContent(content) {
@@ -167,16 +187,16 @@ function filterEntries(entries, ids, label) {
   return entries.filter((entry) => ids.includes(entry.id));
 }
 
-function readSource(relativePath) {
-  const absolutePath = join(ROOT, relativePath);
+function readSource(root, relativePath) {
+  const absolutePath = join(root, relativePath);
   if (!existsSync(absolutePath)) {
     throw new Error(`源文件不存在: ${relativePath}`);
   }
   return readFileSync(absolutePath, "utf8");
 }
 
-function writeTarget(relativePath, content, { dryRun, force, checkClean }) {
-  const absolutePath = join(ROOT, relativePath);
+function writeTarget(root, relativePath, content, { dryRun, force, checkClean }) {
+  const absolutePath = join(root, relativePath);
   const nextHash = hashContent(content);
   let status = "created";
   let prevHash = null;
@@ -209,10 +229,10 @@ function syncRules(config, options) {
 
   for (const entry of entries) {
     try {
-      const raw = readSource(entry.source);
+      const raw = readSource(options.root, entry.source);
       const body = stripRuleBoilerplate(stripFrontmatter(raw));
       const content = buildRuleContent(entry, body);
-      const status = writeTarget(entry.target, content, options);
+      const status = writeTarget(options.root, entry.target, content, options);
       summary[status === "drift" ? "drift" : status] += 1;
       logResult("rule", entry.id, entry.target, status, options.dryRun);
     } catch (error) {
@@ -231,9 +251,9 @@ function syncSkills(config, options) {
   for (const entry of entries) {
     try {
       validateSkillEntry(entry);
-      const raw = readSource(entry.source);
+      const raw = readSource(options.root, entry.source);
       const content = buildSkillContent(entry, raw);
-      const status = writeTarget(entry.target, content, options);
+      const status = writeTarget(options.root, entry.target, content, options);
       summary[status === "drift" ? "drift" : status] += 1;
       logResult("skill", entry.id, entry.target, status, options.dryRun);
     } catch (error) {
@@ -290,7 +310,7 @@ function main() {
     process.exit(1);
   }
 
-  const config = loadConfig();
+  const config = loadConfig(options.configPath);
   let summary;
   try {
     summary =

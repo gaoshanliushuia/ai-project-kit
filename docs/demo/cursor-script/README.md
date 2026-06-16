@@ -32,7 +32,7 @@ npm run sync:rule
 npm run sync:skill
 
 # 只同步指定 rule（id 见 sync-cursor.config.json）
-npm run sync:rule -- codebase-governance
+npm run sync:rule -- codebase
 
 # 只同步指定 skill
 npm run sync:skill -- codebase-implementation
@@ -83,9 +83,9 @@ node sync-cursor.mjs --only skills codebase-implementation --force
 {
   "rules": [
     {
-      "id": "codebase-governance",
+      "id": "codebase",
       "source": "02_build/playbook/04_codebase/rules/RULE.md",
-      "target": ".cursor/rules/codebase-governance.mdc",
+      "target": ".cursor/rules/codebase.mdc",
       "description": "...",
       "alwaysApply": false,
       "globs": ["02_build/playbook/04_codebase/**", "02_build/workspace/04_codebase/**"]
@@ -98,7 +98,7 @@ node sync-cursor.mjs --only skills codebase-implementation --force
       "target": ".cursor/skills/codebase-implementation/SKILL.md",
       "name": "codebase-implementation",
       "description": "...",
-      "governanceRule": "codebase-governance",
+      "governanceRule": "codebase",
       "ruleSource": "02_build/playbook/04_codebase/rules/RULE.md",
       "playbookBase": "02_build/playbook/04_codebase"
     }
@@ -114,7 +114,7 @@ node sync-cursor.mjs --only skills codebase-implementation --force
 
 | 字段 | 说明 |
 |------|------|
-| `id` | 命令行指定名称，如 `npm run sync:rule -- codebase-governance` |
+| `id` | 命令行指定名称，如 `npm run sync:rule -- codebase` |
 | `source` | playbook 源文件（相对项目根） |
 | `target` | 生成的 `.mdc` 路径 |
 | `description` | Cursor rule frontmatter |
@@ -168,7 +168,7 @@ node sync-cursor.mjs --only skills codebase-implementation --force
 
 ### Rules
 
-`requirements-governance`, `architecture-governance`, `design-governance`, `database-governance`, `codebase-governance`, `release-governance`, `testing-governance`, `changes-governance`, `delivery-governance`, `ai-governance`
+`requirements`, `architecture`, `design`, `database`, `codebase`, `coding-standards`, `release`, `testing`, `changes`, `delivery`, `governance`
 
 ### Skills
 

@@ -2,23 +2,22 @@
 
 Version: v0.1.0
 
-`ai-project-kit` 是一个用于初始化 AI 辅助软件研发全过程资产的项目框架。它不是单纯的 Prompt 集合，也不只是代码脚手架，而是把需求收集、方案设计、代码实施、测试变更、上线交付和 AI 治理留痕统一组织起来的工程化模板。
+`ai-project-kit` 是一个用于初始化 AI 辅助软件研发全过程资产的项目框架。它不是单纯的 Prompt 集合，也不只是代码脚手架，而是把需求收集、方案设计、代码实施、测试、变更管理、上线交付和 AI 治理留痕统一组织起来的工程化模板。
 
 ## 项目定位
 
 这个项目面向的是“AI 已经参与软件研发，但项目资产仍然需要可管理、可交接、可追溯”的场景。它希望解决的不是某一个文档怎么写，而是把软件项目从需求到交付过程中持续产生的材料，放进一套清晰、稳定、适合人和 AI 共同工作的目录结构里。
 
-初始化之后，项目资产会按五个工作组组织：
+初始化之后，项目资产会按六个工作组组织：
 
-
-| 目录            | 资产域    | 解决的问题                             |
-| ------------- | ------ | --------------------------------- |
-| `01_req`      | 需求组    | 把业务输入、范围、原型和需求基线固化下来              |
-| `02_build`    | 实施组    | 承接需求基线，管理架构、设计、数据库、代码和发布          |
-| `03_qa`       | 测试变更组  | 独立管理测试、缺陷、变更和回传给实施组的事项            |
-| `04_delivery` | 交付组    | 管理验收、源代码或交付包、用户手册、培训材料和运维移交       |
-| `05_gov`      | AI 治理组 | 在项目交付后或过程中沉淀 AI 使用、审查、验收和 Metrics |
-
+| 目录 | 资产域 | 解决的问题 |
+|------|--------|------------|
+| `01_req` | 需求组 | 把业务输入、原型和需求基线固化下来 |
+| `02_build` | 实施组 | 承接需求基线，管理架构、设计、数据库、代码和发布 |
+| `03_qa` | 测试与质量保证组 | 独立管理测试、缺陷与发布建议 |
+| `04_change` | 变更管理组 | 统一管理需求、设计、配置、发布和交付相关正式变更 |
+| `05_delivery` | 交付组 | 管理验收、交付包、用户手册、培训材料和运维移交 |
+| `06_gov` | AI 治理组 | 沉淀 AI 使用、审查、验收和 Metrics |
 
 每个工作组通常包含两类空间：
 
@@ -39,6 +38,7 @@ npm run init ../my-project
 npm run init ../my-project req
 npm run init ../my-project build
 npm run init ../my-project qa
+npm run init ../my-project change
 npm run init ../my-project delivery
 npm run init ../my-project gov
 ```
@@ -51,18 +51,25 @@ npm run init ../my-project gov
 npm run init .tmp/bootstrap-test all
 ```
 
+更新 `docs/demo/` 案例（结构与模板对齐）：
+
+```bash
+npm run regenerate:demo
+```
+
 ## 初始化后的结构
 
-初始化完整项目后，目标目录会得到五个顶层工作组，以及 AI 工具同步脚本（与工作组平级）：
+初始化完整项目后，目标目录会得到六个顶层工作组，以及 AI 工具同步脚本（与工作组平级）：
 
 ```text
 项目根目录/
 ├── README.md
 ├── 01_req/                需求组
 ├── 02_build/              实施组
-├── 03_qa/                 测试变更组
-├── 04_delivery/           交付组
-├── 05_gov/                AI 治理组
+├── 03_qa/                 测试与质量保证组
+├── 04_change/             变更管理组
+├── 05_delivery/           交付组
+├── 06_gov/                AI 治理组
 ├── cursor-script/         Cursor rule/skill 同步（默认初始化）
 └── qoder-script/          Qoder rule/skill 同步预留目录（默认初始化）
 ```
@@ -76,15 +83,16 @@ npm --prefix cursor-script run sync:skill
 
 将 playbook 中的规则与技能同步到 `.cursor/`。详见 `cursor-script/README.md`。
 
-如果按阶段分仓库管理，也可以把五个工作组分别放在独立仓库或独立目录中：
+如果按阶段分仓库管理，也可以把六个工作组分别放在独立仓库或独立目录中：
 
 ```text
 xxx项目/
-├── xxx项目_01_req/        需求组仓库或目录
-├── xxx项目_02_build/      实施组仓库或目录
-├── xxx项目_03_qa/         测试变更组仓库或目录
-├── xxx项目_04_delivery/   交付组仓库或目录
-└── xxx项目_05_gov/        AI 治理组仓库或目录
+├── xxx项目_01_req/
+├── xxx项目_02_build/
+├── xxx项目_03_qa/
+├── xxx项目_04_change/
+├── xxx项目_05_delivery/
+└── xxx项目_06_gov/
 ```
 
 本仓库自身的结构如下：
@@ -92,42 +100,45 @@ xxx项目/
 ```text
 ai-project-kit/
 ├── README.md              项目总纲与开源协作入口
-├── package.json           npm 包配置
+├── playbook/              本仓库（框架）级 rule/skill 源
+├── package.json
 ├── ai-project-kit.js      初始化脚本
 ├── templates/             工作组模板源头
-│   ├── README.md          生成到目标项目的入口说明
-│   ├── 01_req/            需求组
-│   ├── 02_build/          实施组
-│   ├── 03_qa/             测试变更组
-│   ├── 04_delivery/       交付组
-│   └── 05_gov/            AI 治理组
-└── scripts/               AI 工具脚本（初始化时复制到目标项目根）
-    ├── README.md
-    ├── cursor-script/     Cursor rule/skill 同步
-    └── qoder-script/      Qoder rule/skill 同步预留目录
+│   ├── README.md
+│   ├── 01_req/ … 06_gov/
+├── docs/
+│   ├── README.md          实施指导手册
+│   └── demo/              中学教务管理系统完整案例
+└── scripts/
+    ├── cursor-script/     Cursor rule/skill 同步（初始化时复制到目标项目）
+    ├── regenerate-demo.js demo 重建脚本
+    └── qoder-script/
+```
+
+维护本仓库时，同步框架级 Cursor 规则：
+
+```bash
+npm run sync:kit-rule
+npm run sync:kit-skill
 ```
 
 ## 设计思想
 
 软件项目的真实交付物不只有代码。一个项目从开始到结束，通常会持续产生需求访谈、业务流程、原型、架构决策、详细设计、数据库设计、代码任务、测试用例、缺陷、变更、发布计划、上线材料、验收记录和复盘结论。AI 参与后，还会额外产生 Prompt、AI 输出、人工审查、采纳记录、安全检查和质量度量。
 
-如果这些资产只散落在聊天记录、个人文档或代码仓库的临时目录里，项目很容易出现三个问题：需求和实现脱节、测试和变更无法追溯、AI 生成内容缺少审核与治理。因此 `ai-project-kit` 把软件研发过程拆成五个大的资产域，让不同阶段的输入、输出、评审和交接都有明确位置。
+如果这些资产只散落在聊天记录、个人文档或代码仓库的临时目录里，项目很容易出现三个问题：需求和实现脱节、测试和变更无法追溯、AI 生成内容缺少审核与治理。因此 `ai-project-kit` 把软件研发过程拆成六个大的资产域，让不同阶段的输入、输出、评审和交接都有明确位置。
 
-这种划分不是为了增加流程负担，而是为了让 AI 能在明确边界内工作：需求组负责“做什么”，实施组负责“怎么构建和发布”，测试变更组负责“是否正确以及变化如何处理”，交付组负责“向用户交付什么、如何验收和移交”，治理组负责“AI 在哪里参与、产出是否可信、风险是否可追踪”。
+这种划分不是为了增加流程负担，而是为了让 AI 能在明确边界内工作：需求组负责“做什么”，实施组负责“怎么构建和发布”，测试组负责“是否正确”，变更组负责“变化如何登记与闭环”，交付组负责“向用户交付什么、如何验收和移交”，治理组负责“AI 在哪里参与、产出是否可信、风险是否可追踪”。
 
 ## 经验来源与预期收益
 
-这个框架主要来自过去软件项目实践中的积累和提炼：项目越往后走，真正影响交付效率的往往不是单个文档是否漂亮，而是需求、设计、代码、测试、交付和审计材料之间能不能持续对齐。AI 加入以后，这个问题会更明显，因为 AI 需要稳定上下文，也需要明确知道哪些材料是输入、哪些材料是输出、哪些内容必须由人审查。
-
 按工作组和资产域拆分后，预期可以带来几类收益：
 
-- 让需求基线、实现过程、测试变更、用户交付和 AI 治理互不混写。
-- 让不同角色按职责维护自己的资产，同时通过基线引用、回传记录和交付清单做结构化交接。
+- 让需求基线、实现过程、测试、变更、用户交付和 AI 治理互不混写。
+- 让不同角色按职责维护自己的资产，同时通过基线引用、变更记录和交付清单做结构化交接。
 - 让 AI 工具在处理当前阶段时减少上下文噪音，降低误读其他阶段材料的风险。
 - 让权限和审计更清楚，例如需求访谈、生产部署材料、AI 安全检查可以分别控制访问范围。
 - 让项目结束后仍能追溯“需求为何如此、实现如何决策、缺陷如何关闭、AI 输出如何被验收”。
-
-项目规模较小时，可以把五个工作组放在同一个仓库里；项目规模较大、权限边界明显或协作角色较多时，推荐按五个大阶段分别管理仓库或至少分别管理资产空间。这个框架强调的是资产边界和交接机制，不强制所有团队采用同一种仓库策略。
 
 ## 使用建议
 
@@ -143,51 +154,39 @@ npm run init <target> all
 npm run init <target> req
 npm run init <target> build
 npm run init <target> qa
+npm run init <target> change
 npm run init <target> delivery
 npm run init <target> gov
 ```
 
-本地建议始终保留一个项目总目录，把五个阶段的仓库或五个顶层目录统一放在其下，并让 Codex、Cursor 等 AI 工具从这个项目根目录打开工作区。这样在需要时可以调阅五个阶段的全部文档和交接材料，而不是只能看到单一阶段的局部上下文。
-
-初始化后不要急着让 AI 直接生成最终文档。更推荐先让 AI 阅读并完善当前岗位的 `playbook`，明确本阶段应该输入什么、输出什么、如何评审、如何编号、如何交接。`playbook` 越清晰，后续生成到 `workspace` 的产物越稳定。
+初始化后不要急着让 AI 直接生成最终文档。更推荐先让 AI 阅读并完善当前岗位的 `playbook`，明确本阶段应该输入什么、输出什么、如何评审、如何编号、如何交接。
 
 ## 工作方式
 
 推荐按下面的节奏使用：
 
-1. 先进入自己负责的工作组目录，例如需求人员进入 `01_req/`，开发或架构人员进入 `02_build/`，测试人员进入 `03_qa/`，交付人员进入 `04_delivery/`。
-2. 先阅读本组 `README.md`、`playbook/README.md` 和当前阶段的 `playbook/<stage>/README.md`。
-3. 使用 AI 先完善本岗位 `playbook` 中的文档编写说明，明确本阶段应该输入什么、输出什么、如何评审、如何编号、如何交接。
-4. 如果本阶段会用到特定规则、技能或提示词，可以把实践中沉淀下来的内容补充到当前阶段的 `rules/`、`skills/`、`prompts/` 中。
-5. 再让 AI 参考 `playbook` 中的说明，把实际工作产物生成到对应的 `workspace/<stage>/` 目录中。
-6. 产物生成后由岗位负责人评审、修改和确认，AI 只负责辅助生成初稿、检查缺口和整理结构。
-7. 涉及重要 AI 使用、敏感信息、安全检查或输出验收时，在 `05_gov/workspace/` 中同步留下治理记录。
+1. 进入自己负责的工作组目录（`01_req` … `06_gov`）。
+2. 阅读本组 `README.md`、`playbook/README.md` 和当前阶段的 `playbook/<stage>/README.md`。
+3. 使用 AI 完善本岗位 `playbook` 中的 `rules/`、`skills/`、`prompts/`。
+4. 参考 `playbook` 把产物生成到 `workspace/`。
+5. 由岗位负责人评审确认；重要 AI 活动在 `06_gov/workspace/` 留痕。
 
-每个岗位可以先从当前阶段的 `README.md` 开始补充“本项目适用说明”，再根据实际需要维护 `rules/RULE.md`、`skills/SKILL.md`、`prompts/PROMPT.md`。`rules` 适合保存必须遵守的约束和检查规则，`skills` 适合保存岗位执行方法，`prompts` 适合保存可复用的 AI 提示词模板。
+跨岗位引用示例：
 
-`workspace` 只放项目执行过程中产生的具体材料，例如需求清单、设计说明、数据库脚本、测试报告、交付包清单、用户手册、验收记录和治理留痕。
-
-如果本岗位工作依赖其他岗位的前置成果，不建议直接复制一堆上下游材料到当前目录中混写。更推荐在当前阶段 `playbook` 中明确写明依赖关系，例如：
-
-- 需求组输出的已确认需求基线位于 `01_req/workspace/01_requirements/` 内建议的基线或交接子目录。
-- 实施组在对应阶段目录内记录引用的需求基线来源与版本。
-- 测试变更组通过 `03_qa/workspace/02_changes/` 内建议的回传目录或回传记录同步缺陷和变更影响。
-- 交付组引用 `02_build/workspace/05_release/` 的发布材料和 `03_qa/workspace/` 的测试结论。
-
-跨岗位引用前置产物时，应在 `playbook` 中说明来源、版本、编号和使用方式。这样 AI 在生成本岗位 `workspace` 产物时，就能清楚知道哪些内容是输入依据，哪些内容是本阶段需要新生成的输出。
+- 需求基线：`01_req/workspace/03_baseline/`
+- 变更登记：`04_change/workspace/`
+- 发布材料：`02_build/workspace/05_release/`
+- 测试结论：`03_qa/workspace/01_testing/`
 
 ## 维护模型
 
 - `templates/` 是唯一模板源头。
-- `ai-project-kit.js` 是初始化入口，只负责把 `templates/` 中的模板加载到目标仓库。
-- 修改框架标准时，先改 `templates/`，再执行 `npm run init .tmp/bootstrap-test all` 做一次临时初始化验证。
-- 本项目会持续更新 `playbook` 中内置的 `rules`、`skills`、`prompts`，用于沉淀项目实践中的可复用规则、岗位执行经验和提示词模板。
-- 团队在实际项目中发现更好的约束、检查清单、Prompt 或产物结构，也建议优先回写到对应阶段的 `playbook`，再由 `workspace` 承载具体项目材料。
-- 发布维护以 GitHub/npm 为主，不再发布独立 AI 工具插件包，避免模板、工具引用和发布包三处漂移。
+- `playbook/` 是本仓库（框架维护）的 rule/skill 源，通过 `npm run sync:kit-rule` 同步到 `.cursor/`。
+- 修改框架标准时，先改 `templates/`，再 `npm run init .tmp/bootstrap-test all` 验证，必要时 `npm run regenerate:demo`。
+- 业务项目内各阶段 playbook 修改后，在目标项目根执行 `cursor-script` 的 sync 命令。
 
 ## 当前版本状态
 
 - 版本：v0.1.0
-- 工作组：`01_req` / `02_build` / `03_qa` / `04_delivery` / `05_gov`
-- 初始化命令：`npm run init <target> [req|build|qa|delivery|gov|all]`
-
+- 工作组：`01_req` / `02_build` / `03_qa` / `04_change` / `05_delivery` / `06_gov`
+- 初始化命令：`npm run init <target> [req|build|qa|change|delivery|gov|all]`

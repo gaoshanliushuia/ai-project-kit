@@ -14,9 +14,9 @@
 
 | 输入产物 | 路径 | 使用方式 |
 |----------|------|----------|
-| 需求基线 | `01_req/workspace/01_requirements/07_baseline/requirements-baseline-v1.0.md` | 确认实现范围和 REQ 编号 |
-| 需求追踪矩阵 | `01_req/workspace/01_requirements/05_traceability/requirements-traceability-v1.0.md` | 建立 REQ、DES、CODE、QA 映射 |
-| 原型说明 | `01_req/workspace/01_requirements/03_prototypes/prototype-notes-v1.0.md` | 理解页面、菜单、字段和操作 |
+| 需求基线 | `01_req/workspace/03_baseline/requirements-baseline-v1.0.md` | 确认实现范围和 REQ 编号 |
+| 需求追踪矩阵 | `01_req/workspace/03_baseline/requirements-traceability-v1.0.md` | 建立 REQ、DES、CODE、QA 映射 |
+| 原型说明 | `01_req/workspace/02_prototypes/prototype-notes-v1.0.md` | 理解页面、菜单、字段和操作 |
 | 架构设计 | `02_build/workspace/01_architecture/architecture-design-v1.0.md` | 确认前后端分离、单体后端、RBAC、REST API |
 | 软件功能说明 | `02_build/workspace/02_design/software-function-spec-v1.0.md` | 作为功能范围、页面字段、权限和测试关注点输入 |
 | 模块设计 | `02_build/workspace/02_design/02_modules/module-design-v1.0.md` | 确认模块职责、边界、依赖、输入输出 |

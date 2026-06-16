@@ -11,7 +11,7 @@
 | 开发实现计划 | `02_build/workspace/02_design/implementation/implementation-plan-v1.0.md` |
 | 模块级开发实现文档 | `02_build/workspace/02_design/implementation/modules/` |
 | 测试报告 | `03_qa/workspace/01_testing/test-report-v1.0.md` |
-| 缺陷与变更回传记录 | `03_qa/workspace/02_changes/defect-change-log-v1.0.md` |
+| 缺陷与变更回传记录 | `04_change/workspace/defect-change-log-v1.0.md` |
 
 ## 2. 发布版本
 
@@ -128,7 +128,7 @@ AI-Agent 可辅助生成发布说明和交付清单初稿，发布执行和风�
 | 2 | 恢复上一版本服务包或停止 Demo 发布 |
 | 3 | 如数据库脚本已执行，使用备份恢复或执行回滚脚本 |
 | 4 | 记录回滚原因、影响范围和责任人 |
-| 5 | 将问题回传到 `03_qa/workspace/02_changes/` |
+| 5 | 将问题回传到 `04_change/workspace/` |
 
 ## 13. 发布签发
 

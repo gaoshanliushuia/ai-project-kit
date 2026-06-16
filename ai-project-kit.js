@@ -4,13 +4,14 @@
 const fs = require("fs");
 const path = require("path");
 
-const GROUPS = ["01_req", "02_build", "03_qa", "04_delivery", "05_gov"];
+const GROUPS = ["01_req", "02_build", "03_qa", "04_change", "05_delivery", "06_gov"];
 const GROUP_ALIASES = {
   req: ["01_req"],
   build: ["02_build"],
   qa: ["03_qa"],
-  delivery: ["04_delivery"],
-  gov: ["05_gov"],
+  change: ["04_change"],
+  delivery: ["05_delivery"],
+  gov: ["06_gov"],
   all: GROUPS,
 };
 
@@ -18,7 +19,7 @@ function usage() {
   return `ai-project-kit
 
 Usage:
-  npm run init <target> [req|build|qa|delivery|gov|all]
+  npm run init <target> [req|build|qa|change|delivery|gov|all]
 
 Examples:
   npm run init ../my-project
@@ -72,7 +73,7 @@ function parseArgs(argv) {
   }
 
   if (!GROUP_ALIASES[args.group]) {
-    throw new Error(`Invalid group "${args.group}". Use req, build, qa, delivery, gov, or all.`);
+    throw new Error(`Invalid group "${args.group}". Use req, build, qa, change, delivery, gov, or all.`);
   }
 
   return args;

@@ -10,7 +10,7 @@
 |----------|------|
 | 软件功能说明文档 | `02_build/workspace/02_design/software-function-spec-v1.0.md` |
 | 架构设计说明 | `02_build/workspace/01_architecture/architecture-design-v1.0.md` |
-| 需求基线 | `01_req/workspace/01_requirements/07_baseline/requirements-baseline-v1.0.md` |
+| 需求基线 | `01_req/workspace/03_baseline/requirements-baseline-v1.0.md` |
 
 ## 2. 核心数据表
 

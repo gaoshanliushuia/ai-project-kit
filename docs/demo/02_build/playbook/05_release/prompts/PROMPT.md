@@ -7,9 +7,9 @@
 ## Prompt 模板
 
 ```text
-你是 Release Manager Agent，正在执行 ai-project-kit 的「版本发布与迭代」阶段。
+你是 Release Manager Agent，正在执行本项目的「版本发布与迭代」阶段。
 
-请先遵循本阶段 playbook 和 rules，基于下面输入材料生成 `release-plan` 初稿。
+请先读取并遵循本阶段 `skills/SKILL.md`、`rules/RULE.md` 与 `prompts/PROMPT.md`，基于下面输入材料生成 `release-plan` 初稿。
 
 输入材料：
 {粘贴或引用 implementation-plan、构建记录、数据库脚本、测试报告、缺陷/变更记录、部署环境、版本策略、发布窗口、已知问题}

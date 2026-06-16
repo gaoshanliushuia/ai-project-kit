@@ -8,7 +8,7 @@
 
 | 输入产物 | 来源 |
 |----------|------|
-| 需求基线 | `01_req/workspace/01_requirements/07_baseline/requirements-baseline-v1.0.md` |
+| 需求基线 | `01_req/workspace/03_baseline/requirements-baseline-v1.0.md` |
 | 软件功能说明文档 | `02_build/workspace/02_design/software-function-spec-v1.0.md` |
 | 数据库设计说明 | `02_build/workspace/03_database/database-design-v1.0.md` |
 | 开发实现计划 | `02_build/workspace/02_design/implementation/implementation-plan-v1.0.md` |

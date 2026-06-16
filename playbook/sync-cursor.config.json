@@ -1,0 +1,32 @@
+{
+  "rules": [
+    {
+      "id": "ai-project-kit",
+      "source": "playbook/rules/RULE.md",
+      "target": ".cursor/rules/ai-project-kit.mdc",
+      "description": "ai-project-kit 框架仓库维护约束 — 六大工作组、templates 源头、demo 与 Cursor 同步",
+      "alwaysApply": true,
+      "globs": [
+        "templates/**",
+        "docs/**",
+        "scripts/**",
+        "playbook/**",
+        "ai-project-kit.js",
+        "package.json",
+        "README.md"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "ai-project-kit-framework",
+      "source": "playbook/skills/SKILL.md",
+      "target": ".cursor/skills/ai-project-kit-framework/SKILL.md",
+      "name": "ai-project-kit-framework",
+      "description": "Maintains the ai-project-kit repository—templates, six workgroup layout, init script, docs/demo case study, and playbook-to-Cursor sync. Use when editing templates/**, docs/demo/**, ai-project-kit.js, playbook/, or when the user mentions ai-project-kit framework, workgroup structure, template initialization, or demo regeneration.",
+      "governanceRule": "ai-project-kit",
+      "ruleSource": "playbook/rules/RULE.md",
+      "playbookBase": "playbook"
+    }
+  ]
+}

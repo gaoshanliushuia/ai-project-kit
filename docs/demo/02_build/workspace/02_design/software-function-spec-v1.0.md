@@ -12,8 +12,8 @@
 
 | 输入产物 | 来源 |
 |----------|------|
-| 需求基线 | `01_req/workspace/01_requirements/07_baseline/requirements-baseline-v1.0.md` |
-| 页面原型说明 | `01_req/workspace/01_requirements/03_prototypes/prototype-notes-v1.0.md` |
+| 需求基线 | `01_req/workspace/03_baseline/requirements-baseline-v1.0.md` |
+| 页面原型说明 | `01_req/workspace/02_prototypes/prototype-notes-v1.0.md` |
 | 架构设计说明 | `02_build/workspace/01_architecture/architecture-design-v1.0.md` |
 
 ## 3. 功能说明清单
