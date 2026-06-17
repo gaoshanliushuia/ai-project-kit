@@ -12,7 +12,7 @@ playbook/
 ## 阶段关系
 
 ```text
-02_build/05_release
+02_build/04_release
     -> 05_delivery/01_delivery
     -> 06_gov/workspace/（AI 治理留痕）
 ```
