@@ -23,7 +23,7 @@ cursor-script/
 在 **`framework/cursor-script/`** 目录下执行：
 
 ```bash
-cd cursor-script
+cd framework/cursor-script
 
 # 同步全部 rule
 npm run sync:rule
@@ -32,7 +32,7 @@ npm run sync:rule
 npm run sync:skill
 
 # 只同步指定 rule（id 见 sync-cursor.config.json）
-npm run sync:rule -- codebase
+npm run sync:rule -- coding
 
 # 只同步指定 skill
 npm run sync:skill -- coding
@@ -59,6 +59,7 @@ npm --prefix framework/cursor-script run sync:skill -- coding
 | `npm run sync:skill:dry` | 预览 skill 同步，不写文件 |
 | `npm run sync:rule:check` | 检查 rule 是否已与 playbook 一致（CI 可用） |
 | `npm run sync:skill:check` | 检查 skill 是否已与 playbook 一致（CI 可用） |
+| `npm run sync:validate` | 校验全部 source 路径并 dry-run 预览（不写入） |
 
 ### 附加 flag（写在 `--` 之后）
 
@@ -83,9 +84,9 @@ node sync-cursor.mjs --only skills coding --force
 {
   "rules": [
     {
-      "id": "codebase",
+      "id": "coding",
       "source": "02_build/playbook/03_code/rules/RULE.md",
-      "target": ".cursor/rules/codebase.mdc",
+      "target": ".cursor/rules/coding.mdc",
       "description": "...",
       "alwaysApply": false,
       "globs": ["02_build/playbook/03_code/**", "02_build/workspace/03_code/**"]
@@ -98,7 +99,7 @@ node sync-cursor.mjs --only skills coding --force
       "target": ".cursor/skills/coding/SKILL.md",
       "name": "coding",
       "description": "...",
-      "governanceRule": "codebase",
+      "governanceRule": "coding",
       "ruleSource": "02_build/playbook/03_code/rules/RULE.md",
       "playbookBase": "02_build/playbook/03_code"
     }
@@ -106,7 +107,7 @@ node sync-cursor.mjs --only skills coding --force
 }
 ```
 
-> `source` / `target` 路径均相对**项目根** `qtgs_project/`，不是相对 `cursor-script/`。
+> `source` / `target` 路径均相对**项目根**（含 `01_req/`、`02_build/` 等六大工作组的那一层），不是相对 `framework/` 或 `cursor-script/`。脚本会自动识别：位于 `framework/cursor-script/` 时，项目根为 `framework` 的上一级。
 
 ### 字段说明
 
@@ -114,7 +115,7 @@ node sync-cursor.mjs --only skills coding --force
 
 | 字段 | 说明 |
 |------|------|
-| `id` | 命令行指定名称，如 `npm run sync:rule -- codebase` |
+| `id` | 命令行指定名称，如 `npm run sync:rule -- coding` |
 | `source` | playbook 源文件（相对项目根） |
 | `target` | 生成的 `.mdc` 路径 |
 | `description` | Cursor rule frontmatter |
@@ -168,7 +169,7 @@ node sync-cursor.mjs --only skills coding --force
 
 ### Rules
 
-`requirements`, `architecture`, `design`, `database`, `codebase`, `coding-standards`, `release`, `testing`, `changes`, `delivery`, `governance`
+`requirements`, `architecture`, `design`, `coding`, `coding-standards`, `release`, `testing`, `changes`, `delivery`, `governance`
 
 ### Skills
 

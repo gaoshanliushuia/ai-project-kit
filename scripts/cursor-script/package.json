@@ -8,6 +8,7 @@
     "sync:rule:dry": "node sync-cursor.mjs --only rules --dry-run",
     "sync:skill:dry": "node sync-cursor.mjs --only skills --dry-run",
     "sync:rule:check": "node sync-cursor.mjs --only rules --check-clean --dry-run",
-    "sync:skill:check": "node sync-cursor.mjs --only skills --check-clean --dry-run"
+    "sync:skill:check": "node sync-cursor.mjs --only skills --check-clean --dry-run",
+    "sync:validate": "node sync-cursor.mjs --only rules --dry-run && node sync-cursor.mjs --only skills --dry-run"
   }
 }

@@ -31,9 +31,9 @@
       ]
     },
     {
-      "id": "codebase",
+      "id": "coding",
       "source": "02_build/playbook/03_code/rules/RULE.md",
-      "target": ".cursor/rules/codebase.mdc",
+      "target": ".cursor/rules/coding.mdc",
       "description": "代码实现与工程管理阶段 — 进入条件、执行、评审与 AI 协同约束",
       "alwaysApply": false,
       "globs": [
@@ -58,13 +58,13 @@
     },
     {
       "id": "release",
-      "source": "02_build/playbook/05_release/rules/RULE.md",
+      "source": "02_build/playbook/04_release/rules/RULE.md",
       "target": ".cursor/rules/release.mdc",
       "description": "版本发布与迭代阶段 — 进入条件、执行、评审与 AI 协同约束",
       "alwaysApply": false,
       "globs": [
-        "02_build/playbook/05_release/**",
-        "02_build/workspace/05_release/**"
+        "02_build/playbook/04_release/**",
+        "02_build/workspace/04_release/**"
       ]
     },
     {
@@ -142,19 +142,19 @@
       "target": ".cursor/skills/coding/SKILL.md",
       "name": "coding",
       "description": "Executes the 代码实现与工程管理 phase workflow: dev task breakdown, implementation, testing evidence, code review, and handoff to QA/release (CODE prefix). Use when working in 02_build/playbook/03_code/** or 02_build/workspace/03_code/**, or when the user mentions code implementation, CODE artifacts, build/test records, or dev handoff.",
-      "governanceRule": "codebase",
+      "governanceRule": "coding",
       "ruleSource": "02_build/playbook/03_code/rules/RULE.md",
       "playbookBase": "02_build/playbook/03_code"
     },
     {
       "id": "release",
-      "source": "02_build/playbook/05_release/skills/SKILL.md",
+      "source": "02_build/playbook/04_release/skills/SKILL.md",
       "target": ".cursor/skills/release/SKILL.md",
       "name": "release",
-      "description": "Executes the 版本发布与迭代 phase workflow: release planning, deployment checklists, rollback preparation, release validation, and post-release review (REL prefix). Use when working in 02_build/playbook/05_release/** or 02_build/workspace/05_release/**, or when the user mentions release management, REL artifacts, deployment, or rollback.",
+      "description": "Executes the 版本发布与迭代 phase workflow: release planning, deployment checklists, rollback preparation, release validation, and post-release review (REL prefix). Use when working in 02_build/playbook/04_release/** or 02_build/workspace/04_release/**, or when the user mentions release management, REL artifacts, deployment, or rollback.",
       "governanceRule": "release",
-      "ruleSource": "02_build/playbook/05_release/rules/RULE.md",
-      "playbookBase": "02_build/playbook/05_release"
+      "ruleSource": "02_build/playbook/04_release/rules/RULE.md",
+      "playbookBase": "02_build/playbook/04_release"
     },
     {
       "id": "test",

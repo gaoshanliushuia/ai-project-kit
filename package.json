@@ -7,13 +7,11 @@
     "ai-project-kit.js",
     "templates",
     "scripts",
-    "playbook",
     "README.md"
   ],
   "scripts": {
     "init": "node ai-project-kit.js",
-    "sync:kit-rule": "node scripts/cursor-script/sync-cursor.mjs --root . --config playbook/sync-cursor.config.json --only rules",
-    "sync:kit-skill": "node scripts/cursor-script/sync-cursor.mjs --root . --config playbook/sync-cursor.config.json --only skills"
+    "validate:sync-config": "node ai-project-kit.js .tmp/sync-validate all && node scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only rules --dry-run && node scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only skills --dry-run"
   },
   "keywords": [
     "ai",

@@ -5,7 +5,7 @@
 ## 仓库职责
 
 - `templates/` 是模板源头，`templates/README.md` 会被 `init` 复制到目标项目的 `framework/README.md`。
-- `playbook/` 是本仓库框架维护用的规则/技能源。
+- 各阶段 `playbook/` 标准位于 `templates/**/playbook/`。
 - `ai-project-kit.js` 负责把模板初始化到目标目录。
 - `scripts/` 里包含同步脚本，初始化时会放到目标项目的 `framework/` 下。
 
@@ -40,18 +40,23 @@ npm run init .tmp/bootstrap-test all
 
 1. 先更新模板内容。
 2. 用 `npm run init .tmp/bootstrap-test all` 验证初始化结果。
-3. playbook 规则或技能改动后，执行对应同步脚本。
+3. 若改了 `scripts/cursor-script/sync-cursor.config.json`，执行 `npm run validate:sync-config` 校验全部 source 路径。
+4. playbook 规则或技能改动后，在目标项目内执行 `framework/cursor-script` 的 sync 命令。
 
 ## Cursor 同步
 
-本仓库提供框架级 Cursor 规则和技能同步能力：
+业务项目初始化后，在项目根目录执行：
 
 ```bash
-npm run sync:kit-rule
-npm run sync:kit-skill
+npm --prefix framework/cursor-script run sync:rule
+npm --prefix framework/cursor-script run sync:skill
 ```
 
-如果是在目标项目内同步阶段级规则/技能，请按该项目的 `framework/cursor-script/` 配置执行。
+本仓库维护时可校验 sync 配置是否与模板目录一致：
+
+```bash
+npm run validate:sync-config
+```
 
 ## 目录概览
 
@@ -60,7 +65,6 @@ ai-project-kit/
 ├── README.md
 ├── ai-project-kit.js
 ├── templates/
-├── playbook/
 └── scripts/
 ```
 

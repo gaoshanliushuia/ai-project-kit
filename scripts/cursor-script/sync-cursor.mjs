@@ -2,12 +2,48 @@
 
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DEFAULT_ROOT = resolve(__dirname, "..");
 const DEFAULT_CONFIG_PATH = join(__dirname, "sync-cursor.config.json");
+
+function hasWorkgroupDirs(dir) {
+  return existsSync(join(dir, "01_req")) || existsSync(join(dir, "02_build"));
+}
+
+/** 推断项目根：playbook 与 .cursor 产物均相对此目录 */
+function resolveDefaultRoot(scriptDir) {
+  if (process.env.AI_PROJECT_ROOT) {
+    return resolve(process.env.AI_PROJECT_ROOT);
+  }
+
+  const parent = resolve(scriptDir, "..");
+  const grandparent = resolve(scriptDir, "../..");
+
+  // framework/cursor-script → 项目根在 framework 的上一级
+  if (basename(parent) === "framework") {
+    return grandparent;
+  }
+
+  // 项目根下的 cursor-script（旧布局）
+  if (hasWorkgroupDirs(parent)) {
+    return parent;
+  }
+
+  // scripts/cursor-script（ai-project-kit 维护仓库，通常配合 --root 使用）
+  if (basename(parent) === "scripts" && hasWorkgroupDirs(grandparent)) {
+    return grandparent;
+  }
+
+  if (hasWorkgroupDirs(grandparent)) {
+    return grandparent;
+  }
+
+  return parent;
+}
+
+const DEFAULT_ROOT = resolveDefaultRoot(__dirname);
 
 const ONLY_VALUES = new Set(["rules", "skills"]);
 
@@ -19,9 +55,7 @@ function parseArgs(argv) {
     force: false,
     checkClean: false,
     configPath: DEFAULT_CONFIG_PATH,
-    root: process.env.AI_PROJECT_ROOT
-      ? resolve(process.env.AI_PROJECT_ROOT)
-      : DEFAULT_ROOT,
+    root: DEFAULT_ROOT,
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -297,6 +331,28 @@ function printSummary(kind, summary, options) {
   }
 }
 
+function validateConfigSources(config, root) {
+  const missing = [];
+
+  for (const entry of config.rules ?? []) {
+    if (!existsSync(join(root, entry.source))) {
+      missing.push(`rule ${entry.id}: ${entry.source}`);
+    }
+  }
+
+  for (const entry of config.skills ?? []) {
+    if (!existsSync(join(root, entry.source))) {
+      missing.push(`skill ${entry.id}: ${entry.source}`);
+    }
+  }
+
+  if (missing.length > 0) {
+    throw new Error(
+      `配置中的源文件不存在（项目根: ${root}）:\n${missing.map((item) => `- ${item}`).join("\n")}`
+    );
+  }
+}
+
 function main() {
   let options;
   try {
@@ -311,6 +367,14 @@ function main() {
   }
 
   const config = loadConfig(options.configPath);
+
+  try {
+    validateConfigSources(config, options.root);
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+
   let summary;
   try {
     summary =
