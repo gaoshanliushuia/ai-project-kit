@@ -7,9 +7,22 @@ Version: v0.1.0
 ## 项目作用
 
 - 将 ai-project-kit 定位为 AI Project Framework（AI 辅助研发框架），而不是 Prompt 集合。
-- 按五大工作组划分协作边界：需求、实施、测试变更、交付、AI 治理。
+- 按六大工作组划分协作边界：需求、实施、测试、变更、交付、AI 治理。
 - 帮助各角色在独立目录中并行工作，并通过阶段目录内的基线、回传、交付和治理记录完成交接与留痕。
 - 交付组独立管理面向用户验收的资产；AI 治理统一沉淀在 `06_gov`。
+
+## framework（公共区）
+
+```text
+project-root/
+├── framework/     通用文档与脚本（README + cursor-script）
+├── 01_req/        需求组
+├── 02_build/      实施组（架构 + 设计 + 代码实现 + 发布）
+├── 03_qa/         测试与质量保证组
+├── 04_change/     变更管理组（需求 / 设计 / 技术选型 / 配置 / 发布变更）
+├── 05_delivery/   交付组（验收 + 资料移交 + 用户手册 + 运维交接）
+└── 06_gov/        AI 治理组
+```
 
 ## 六大工作组
 
@@ -36,7 +49,7 @@ Version: v0.1.0
 
 ```text
 playbook/
-└── 01_requirements/     需求收集与需求分析标准
+└── 01_requirements/     需求收集与需求基线标准
 
 workspace/
 ├── 01_inputs/           原始会议、调研、访谈和业务材料
@@ -131,10 +144,11 @@ playbook/ & workspace/
 
 ## 使用建议
 
-1. 阅读本文件，确认五大组职责与交接关系。
+1. 阅读本文件，确认六大组职责与交接关系。
 2. 进入对应组目录，阅读组内 `README.md`。
 3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md` 与 `.cursor/rules/*.mdc`。
-4. 使用 AI 时同步维护 `06_gov/workspace/01_governance/` 留痕。
+4. 如果要同步 Cursor 规则和技能，先进入 `framework/`，阅读 `framework/README.md` 与 `framework/cursor-script/README.md`。
+5. 使用 AI 时同步维护 `06_gov/workspace/01_governance/` 留痕。
 
 ## 按阶段操作指南
 
@@ -170,7 +184,7 @@ playbook/ & workspace/
 
 下面统一用“人员管理”举例。这里的“人员管理”可以包括员工入职、员工转岗、员工离职、组织架构维护、岗位维护、人员状态变更、人员查询与导出等内容。
 
-### 需求分析阶段
+### 需求基线阶段
 
 这个阶段适合把原始业务材料先整理成正式需求。常见输入包括：访谈纪要、业务会议记录、现状流程说明、Excel 台账、原系统截图、口头需求整理等，通常放在 `01_req/workspace/01_inputs/`。
 
@@ -184,15 +198,15 @@ playbook/ & workspace/
 你可以这样对 Agent 说：
 
 ```text
-请使用 requirements-analysis skill，参考 @01_req/workspace/01_inputs/人员管理访谈纪要.md 和 @01_req/workspace/01_inputs/现状流程说明.md，生成“人员管理”需求分析初稿，覆盖员工入职、转岗、离职、组织维护和岗位维护。
+请使用 req-baseline skill，参考 @01_req/workspace/01_inputs/人员管理访谈纪要.md 和 @01_req/workspace/01_inputs/现状流程说明.md，生成“人员管理”需求基线初稿，覆盖员工入职、转岗、离职、组织维护和岗位维护。
 ```
 
 ```text
-请使用 requirements-analysis skill，参考 @01_req/workspace/01_inputs/人员台账字段说明.xlsx、@01_req/workspace/01_inputs/HR讨论纪要.md 和 @01_req/workspace/01_inputs/原系统截图说明.md，整理“人员管理”功能的角色权限、业务规则、边界条件和验收标准。
+请使用 req-baseline skill，参考 @01_req/workspace/01_inputs/人员台账字段说明.xlsx、@01_req/workspace/01_inputs/HR讨论纪要.md 和 @01_req/workspace/01_inputs/原系统截图说明.md，整理“人员管理”功能的角色权限、业务规则、边界条件和验收标准。
 ```
 
 ```text
-请使用 requirements-analysis skill，参考 @01_req/workspace/01_inputs/，把“人员管理”相关讨论下沉成正式需求项，写入 `01_req/workspace/03_baseline/`，并区分已确认需求、假设项和待确认项。
+请使用 req-baseline skill，参考 @01_req/workspace/01_inputs/，把“人员管理”相关讨论下沉成正式需求项，写入 `01_req/workspace/03_baseline/`，并区分已确认需求、假设项和待确认项。
 ```
 
 ### 架构设计阶段
@@ -209,15 +223,15 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 architecture-design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，生成“人员管理”模块的架构设计初稿，重点说明模块边界、子模块划分和外部依赖。
+请使用 architect skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，生成“人员管理”模块的架构设计初稿，重点说明模块边界、子模块划分和外部依赖。
 ```
 
 ```text
-请使用 architecture-design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @外部系统对接说明/统一身份平台.md，输出“人员管理”模块与组织主数据、统一认证、消息通知系统的集成方案。
+请使用 architect skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @外部系统对接说明/统一身份平台.md，输出“人员管理”模块与组织主数据、统一认证、消息通知系统的集成方案。
 ```
 
 ```text
-请使用 architecture-design skill，基于 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，补齐该模块的性能、安全、审计、可追溯性和风险控制设计。
+请使用 architect skill，基于 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，补齐该模块的性能、安全、审计、可追溯性和风险控制设计。
 ```
 
 ### 详细设计阶段
@@ -234,35 +248,35 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 detailed-design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @02_build/workspace/01_architecture/人员管理架构设计-v1.0.md，生成“人员管理”详细设计，覆盖员工入职、转岗、离职、组织维护和岗位维护。
+请使用 design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @02_build/workspace/01_architecture/人员管理架构设计-v1.0.md，生成“人员管理”详细设计，覆盖员工入职、转岗、离职、组织维护和岗位维护。
 ```
 
 ```text
-请使用 detailed-design skill，参考 @02_build/workspace/01_architecture/人员管理架构设计-v1.0.md，输出“员工转岗”子功能的接口设计、状态流转、字段校验、异常处理和权限控制方案。
+请使用 design skill，参考 @02_build/workspace/01_architecture/人员管理架构设计-v1.0.md，输出“员工转岗”子功能的接口设计、状态流转、字段校验、异常处理和权限控制方案。
 ```
 
 ```text
-请使用 detailed-design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，生成“人员档案查询与导出”功能的模块设计、接口契约、查询条件、列表字段、导出规则和界面说明。
+请使用 design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，生成“人员档案查询与导出”功能的模块设计、接口契约、查询条件、列表字段、导出规则和界面说明。
 ```
 
 ### 详细设计中的数据库设计
 
-数据库设计统一通过 `detailed-design skill` 执行，数据库相关产物输出到 `02_build/workspace/02_design/database/`。数据库产物应包含 ER 实体关系图、字段字典、索引设计、建表与变更脚本、初始化数据、回滚说明和数据质量规则。
+数据库设计统一通过 `design skill` 执行，数据库相关产物输出到 `02_build/workspace/02_design/database/`。数据库产物应包含 ER 实体关系图、字段字典、索引设计、建表与变更脚本、初始化数据、回滚说明和数据质量规则。
 
 对于“人员管理”，数据库设计常见会涉及：员工主表、组织表、岗位表、员工任职关系表、人员变更记录表、离职记录表、导入批次表等；同时要明确编码规则、唯一约束、状态字段、逻辑删除策略、历史数据保留策略。
 
 你可以这样说：
 
 ```text
-请使用 detailed-design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @02_build/workspace/02_design/modules/人员管理详细设计.md，生成“人员管理”数据库设计，并输出到 @02_build/workspace/02_design/database。
+请使用 design skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @02_build/workspace/02_design/modules/人员管理详细设计.md，生成“人员管理”数据库设计，并输出到 @02_build/workspace/02_design/database。
 ```
 
 ```text
-请使用 detailed-design skill，参考 @02_build/workspace/02_design/modules/人员管理详细设计.md，输出员工表、组织表、岗位表、任职关系表和人员变更记录表的字段字典、ER 实体关系图、索引约束、初始化数据、迁移脚本和回滚方案。数据库脚本不要创建物理外键。
+请使用 design skill，参考 @02_build/workspace/02_design/modules/人员管理详细设计.md，输出员工表、组织表、岗位表、任职关系表和人员变更记录表的字段字典、ER 实体关系图、索引约束、初始化数据、迁移脚本和回滚方案。数据库脚本不要创建物理外键。
 ```
 
 ```text
-请使用 detailed-design skill，参考 @02_build/workspace/02_design/modules/员工转岗详细设计.md，整理“员工转岗”涉及的实体关系、状态字段、历史保留策略和数据质量校验规则，并用 ER 图箭头表达逻辑外键关系。
+请使用 design skill，参考 @02_build/workspace/02_design/modules/员工转岗详细设计.md，整理“员工转岗”涉及的实体关系、状态字段、历史保留策略和数据质量校验规则，并用 ER 图箭头表达逻辑外键关系。
 ```
 
 ### 编码实现阶段
@@ -279,15 +293,15 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 code-implementation skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md、@02_build/workspace/01_architecture/人员管理架构设计-v1.0.md、@02_build/workspace/02_design/modules/人员管理详细设计.md 和 @02_build/workspace/02_design/database/人员管理数据库设计.md，生成“人员管理”模块的开发任务拆分。
+请使用 coding skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md、@02_build/workspace/01_architecture/人员管理架构设计-v1.0.md、@02_build/workspace/02_design/modules/人员管理详细设计.md 和 @02_build/workspace/02_design/database/人员管理数据库设计.md，生成“人员管理”模块的开发任务拆分。
 ```
 
 ```text
-请使用 code-implementation skill，参考 @02_build/workspace/02_design/modules/员工入职详细设计.md 和 @02_build/workspace/02_design/database/人员管理数据库设计.md，实现“员工入职”功能代码，并给出运行命令和测试命令。
+请使用 coding skill，参考 @02_build/workspace/02_design/modules/员工入职详细设计.md 和 @02_build/workspace/02_design/database/人员管理数据库设计.md，实现“员工入职”功能代码，并给出运行命令和测试命令。
 ```
 
 ```text
-请使用 code-implementation skill，参考 @02_build/workspace/02_design/modules/员工转岗详细设计.md，只实现“员工转岗”这一个子功能，不要扩展到离职、组织维护等其他模块，并同步记录测试证据和待确认问题。
+请使用 coding skill，参考 @02_build/workspace/02_design/modules/员工转岗详细设计.md，只实现“员工转岗”这一个子功能，不要扩展到离职、组织维护等其他模块，并同步记录测试证据和待确认问题。
 ```
 
 ### 测试阶段
@@ -304,15 +318,15 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 quality-assurance skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @02_build/workspace/02_design/modules/人员管理详细设计.md，生成“人员管理”功能的测试方案和测试用例，覆盖员工入职、转岗、离职、组织维护和岗位维护。
+请使用 test skill，参考 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md 和 @02_build/workspace/02_design/modules/人员管理详细设计.md，生成“人员管理”功能的测试方案和测试用例，覆盖员工入职、转岗、离职、组织维护和岗位维护。
 ```
 
 ```text
-请使用 quality-assurance skill，参考 @代码变更说明/员工转岗改造.md 和 @发布说明.md，输出“员工转岗”子功能的测试范围、回归重点、缺陷风险和发布建议。
+请使用 test skill，参考 @代码变更说明/员工转岗改造.md 和 @发布说明.md，输出“员工转岗”子功能的测试范围、回归重点、缺陷风险和发布建议。
 ```
 
 ```text
-请使用 quality-assurance skill，参考 @03_qa/workspace/01_testing/人员管理现有测试记录.md，补充“人员档案查询与导出”功能的缺陷清单、复测建议和回归建议。
+请使用 test skill，参考 @03_qa/workspace/01_testing/人员管理现有测试记录.md，补充“人员档案查询与导出”功能的缺陷清单、复测建议和回归建议。
 ```
 
 ### 变更阶段
@@ -328,11 +342,11 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 change-management skill，参考 @客户新增需求讨论记录/人员管理二期需求.md 和 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，生成“人员管理”功能的变更分析。
+请使用 change skill，参考 @客户新增需求讨论记录/人员管理二期需求.md 和 @01_req/workspace/03_baseline/人员管理需求基线-v1.0.md，生成“人员管理”功能的变更分析。
 ```
 
 ```text
-请使用 change-management skill，参考 @缺陷单/员工转岗历史任职缺失.md、@02_build/workspace/02_design/modules/员工转岗详细设计.md 和 @03_qa/workspace/01_testing/员工转岗测试报告.md，输出该问题的 CR 变更登记、影响分析、修复范围和关闭条件。
+请使用 change skill，参考 @缺陷单/员工转岗历史任职缺失.md、@02_build/workspace/02_design/modules/员工转岗详细设计.md 和 @03_qa/workspace/01_testing/员工转岗测试报告.md，输出该问题的 CR 变更登记、影响分析、修复范围和关闭条件。
 ```
 
 ### 发布阶段
@@ -349,11 +363,11 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 release-management skill，参考 @测试报告/人员管理测试报告.md、@变更记录/人员管理CR记录.md 和 @部署说明/人员管理部署说明.md，生成“人员管理”模块本次版本的发布计划、上线检查清单和回滚说明。
+请使用 release skill，参考 @测试报告/人员管理测试报告.md、@变更记录/人员管理CR记录.md 和 @部署说明/人员管理部署说明.md，生成“人员管理”模块本次版本的发布计划、上线检查清单和回滚说明。
 ```
 
 ```text
-请使用 release-management skill，参考 @02_build/workspace/04_release/ 和 @03_qa/workspace/01_testing/人员管理发布前验证记录.md，整理“员工入职、员工转岗、组织维护”三个子功能的上线步骤、验证项和发布后观察点。
+请使用 release skill，参考 @02_build/workspace/04_release/ 和 @03_qa/workspace/01_testing/人员管理发布前验证记录.md，整理“员工入职、员工转岗、组织维护”三个子功能的上线步骤、验证项和发布后观察点。
 ```
 
 ### 交付验收阶段
@@ -370,11 +384,11 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 delivery-acceptance skill，参考 @最终版本说明/人员管理版本说明.md、@测试报告/人员管理测试报告.md 和 @运维交接资料/人员管理运维说明.md，生成“人员管理”模块的项目交付清单和验收材料。
+请使用 deliver skill，参考 @最终版本说明/人员管理版本说明.md、@测试报告/人员管理测试报告.md 和 @运维交接资料/人员管理运维说明.md，生成“人员管理”模块的项目交付清单和验收材料。
 ```
 
 ```text
-请使用 delivery-acceptance skill，参考 @05_delivery/workspace/01_delivery/，整理“人员管理”项目的用户手册、培训材料、验收记录和遗留问题清单，并补齐缺失项。
+请使用 deliver skill，参考 @05_delivery/workspace/01_delivery/，整理“人员管理”项目的用户手册、培训材料、验收记录和遗留问题清单，并补齐缺失项。
 ```
 
 ### AI 治理阶段
@@ -391,11 +405,11 @@ playbook/ & workspace/
 你可以这样说：
 
 ```text
-请使用 ai-governance skill，参考 @本次对话使用的提示词.md 和 @输出结果/人员管理详细设计草稿.md，生成本次“人员管理”功能的 AI 治理记录。
+请使用 govern skill，参考 @本次对话使用的提示词.md 和 @输出结果/人员管理详细设计草稿.md，生成本次“人员管理”功能的 AI 治理记录。
 ```
 
 ```text
-请使用 ai-governance skill，参考 @06_gov/workspace/01_governance/ 和 @人工确认记录/人员管理人工复核记录.md，补齐本次版本的 Prompt 审查、安全检查、人工确认和输出验收记录。
+请使用 govern skill，参考 @06_gov/workspace/01_governance/ 和 @人工确认记录/人员管理人工复核记录.md，补齐本次版本的 Prompt 审查、安全检查、人工确认和输出验收记录。
 ```
 
 ### 一条简单经验
@@ -423,6 +437,7 @@ xxx项目_06_gov
 
 ```text
 AI工作/
+├── framework/
 ├── xxx项目_01_req/
 ├── xxx项目_02_build/
 ├── xxx项目_03_qa/
@@ -434,10 +449,12 @@ AI工作/
 初始化流程建议：
 
 1. 先创建本地总工作目录，例如 `AI工作/`。
-2. 在该目录下分别创建五个阶段仓库目录。
-3. 每个阶段目录独立执行 `git init` 或绑定独立远程仓库。
-4. 按阶段复制对应的 `01_req`、`02_build`、`03_qa`、`04_change`、`05_delivery`、`06_gov` 模板内容。
-5. 通过阶段目录内的基线、引用记录、回传记录、交付清单和治理留痕传递阶段成果，不直接混写其他阶段仓库。
+2. 先初始化 `framework/`，把项目入口说明和脚本工具放在这里。
+3. 在该目录下分别创建六个阶段仓库目录。
+4. 每个阶段目录独立执行 `git init` 或绑定独立远程仓库。
+5. 按阶段复制对应的 `01_req`、`02_build`、`03_qa`、`04_change`、`05_delivery`、`06_gov` 模板内容。
+6. 进入 `framework/cursor-script/` 执行 `npm run sync:rule` 和 `npm run sync:skill`，把阶段 rule / skill 安装到当前项目。
+7. 通过阶段目录内的基线、引用记录、回传记录、交付清单和治理留痕传递阶段成果，不直接混写其他阶段仓库。
 
 ## 版本说明
 

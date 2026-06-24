@@ -1,5 +1,5 @@
 ﻿---
-name: delivery-acceptance
+name: deliver
 description: 支持 `项目交付与验收` 阶段的通用执行、检查和交付整理。适用于需要按本项目阶段标准推进 `项目交付与验收`、生成阶段产物初稿、检查交接材料或沉淀复用经验时。
 ---
 

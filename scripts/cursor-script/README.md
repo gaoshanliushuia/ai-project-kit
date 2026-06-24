@@ -20,7 +20,7 @@ cursor-script/
 
 ## 快速开始
 
-在 **`cursor-script/`** 目录下执行：
+在 **`framework/cursor-script/`** 目录下执行：
 
 ```bash
 cd cursor-script
@@ -35,14 +35,14 @@ npm run sync:skill
 npm run sync:rule -- codebase
 
 # 只同步指定 skill
-npm run sync:skill -- codebase-implementation
+npm run sync:skill -- coding
 ```
 
 在项目根目录执行（不进入子目录）：
 
 ```bash
-npm --prefix cursor-script run sync:rule
-npm --prefix cursor-script run sync:skill -- codebase-implementation
+npm --prefix framework/cursor-script run sync:rule
+npm --prefix framework/cursor-script run sync:skill -- coding
 ```
 
 > **注意：** 给 npm 脚本传参时必须写 `--`，否则参数不会传给同步脚本。
@@ -66,7 +66,7 @@ npm --prefix cursor-script run sync:skill -- codebase-implementation
 
 ```bash
 node sync-cursor.mjs --only rules --dry-run
-node sync-cursor.mjs --only skills codebase-implementation --force
+node sync-cursor.mjs --only skills coding --force
 ```
 
 | flag | 说明 |
@@ -84,23 +84,23 @@ node sync-cursor.mjs --only skills codebase-implementation --force
   "rules": [
     {
       "id": "codebase",
-      "source": "02_build/playbook/04_codebase/rules/RULE.md",
+      "source": "02_build/playbook/03_code/rules/RULE.md",
       "target": ".cursor/rules/codebase.mdc",
       "description": "...",
       "alwaysApply": false,
-      "globs": ["02_build/playbook/04_codebase/**", "02_build/workspace/04_codebase/**"]
+      "globs": ["02_build/playbook/03_code/**", "02_build/workspace/03_code/**"]
     }
   ],
   "skills": [
     {
-      "id": "codebase-implementation",
-      "source": "02_build/playbook/04_codebase/skills/SKILL.md",
-      "target": ".cursor/skills/codebase-implementation/SKILL.md",
-      "name": "codebase-implementation",
+      "id": "coding",
+      "source": "02_build/playbook/03_code/skills/SKILL.md",
+      "target": ".cursor/skills/coding/SKILL.md",
+      "name": "coding",
       "description": "...",
       "governanceRule": "codebase",
-      "ruleSource": "02_build/playbook/04_codebase/rules/RULE.md",
-      "playbookBase": "02_build/playbook/04_codebase"
+      "ruleSource": "02_build/playbook/03_code/rules/RULE.md",
+      "playbookBase": "02_build/playbook/03_code"
     }
   ]
 }
@@ -172,12 +172,12 @@ node sync-cursor.mjs --only skills codebase-implementation --force
 
 ### Skills
 
-`requirements-analysis`, `architecture-design`, `detailed-design`, `database-design`, `codebase-implementation`, `release-management`, `quality-assurance`, `change-management`, `delivery-acceptance`, `ai-governance`
+`req-baseline`, `architect`, `design`, `coding`, `release`, `test`, `change`, `deliver`, `govern`
 
 ## 推荐工作流
 
 1. 在 playbook 修改 `RULE.md` / `SKILL.md`，走评审与版本发布
-2. 在 `cursor-script/` 执行 `npm run sync:rule` / `npm run sync:skill`（或指定 id）
+2. 在 `framework/cursor-script/` 执行 `npm run sync:rule` / `npm run sync:skill`（或指定 id）
 3. 将 playbook 与 `.cursor/` 变更一并提交 Git
 4. 在 Cursor Settings → Rules / Skills 确认已识别
 

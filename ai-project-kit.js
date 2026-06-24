@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 const GROUPS = ["01_req", "02_build", "03_qa", "04_change", "05_delivery", "06_gov"];
+const FRAMEWORK_DIR = "framework";
 const GROUP_ALIASES = {
   req: ["01_req"],
   build: ["02_build"],
@@ -131,11 +132,14 @@ function initProject(options) {
   const templateRoot = path.join(repoRoot, "templates");
   const scriptsRoot = path.join(repoRoot, "scripts");
   const targetRoot = path.resolve(options.target);
+  const frameworkRoot = path.join(targetRoot, FRAMEWORK_DIR);
   const groups = GROUP_ALIASES[options.group];
 
   fs.mkdirSync(targetRoot, { recursive: true });
 
-  const readmeTarget = path.join(targetRoot, "README.md");
+  fs.mkdirSync(frameworkRoot, { recursive: true });
+
+  const readmeTarget = path.join(frameworkRoot, "README.md");
   if (!fs.existsSync(readmeTarget)) {
     fs.writeFileSync(readmeTarget, buildProjectReadme(templateRoot), "utf8");
   }
@@ -144,11 +148,11 @@ function initProject(options) {
     copyTree(path.join(templateRoot, group), path.join(targetRoot, group));
   }
 
-  const toolScripts = copyToolScripts(scriptsRoot, targetRoot);
+  const toolScripts = copyToolScripts(scriptsRoot, frameworkRoot);
 
-  const summary = [`Initialized groups ${groups.join(", ")} at: ${targetRoot}`];
+  const summary = [`Initialized framework at: ${frameworkRoot}`, `Initialized groups ${groups.join(", ")} at: ${targetRoot}`];
   if (toolScripts.length > 0) {
-    summary.push(`Initialized tool scripts: ${toolScripts.join(", ")}`);
+    summary.push(`Initialized framework tool scripts: ${toolScripts.join(", ")}`);
   }
   console.log(summary.join("\n"));
 }

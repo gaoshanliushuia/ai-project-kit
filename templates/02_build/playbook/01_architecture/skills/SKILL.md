@@ -1,5 +1,5 @@
 ﻿---
-name: architecture-design
+name: architect
 description: 支持 `系统架构设计` 阶段的通用执行、检查和交付整理。适用于需要按本项目阶段标准推进 `系统架构设计`、生成阶段产物初稿、检查交接材料或沉淀复用经验时。
 ---
 
