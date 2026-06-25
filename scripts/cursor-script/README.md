@@ -20,10 +20,10 @@ cursor-script/
 
 ## 快速开始
 
-在 **`framework/cursor-script/`** 目录下执行：
+在 **`ai-kit-framework/cursor-script/`** 目录下执行：
 
 ```bash
-cd framework/cursor-script
+cd ai-kit-framework/cursor-script
 
 # 同步全部 rule
 npm run sync:rule
@@ -41,8 +41,8 @@ npm run sync:skill -- coding
 在项目根目录执行（不进入子目录）：
 
 ```bash
-npm --prefix framework/cursor-script run sync:rule
-npm --prefix framework/cursor-script run sync:skill -- coding
+npm --prefix ai-kit-framework/cursor-script run sync:rule
+npm --prefix ai-kit-framework/cursor-script run sync:skill -- coding
 ```
 
 > **注意：** 给 npm 脚本传参时必须写 `--`，否则参数不会传给同步脚本。
@@ -107,7 +107,7 @@ node sync-cursor.mjs --only skills coding --force
 }
 ```
 
-> `source` / `target` 路径均相对**项目根**（含 `01_req/`、`02_build/` 等六大工作组的那一层），不是相对 `framework/` 或 `cursor-script/`。脚本会自动识别：位于 `framework/cursor-script/` 时，项目根为 `framework` 的上一级。
+> `source` / `target` 路径均相对**项目根**（含 `01_req/`、`02_build/` 等六大工作组的那一层），不是相对 `ai-kit-framework/` 或 `cursor-script/`。脚本会自动识别：位于 `ai-kit-framework/cursor-script/` 时，项目根为 `ai-kit-framework` 的上一级（仍兼容旧目录名 `framework/`）。
 
 ### 字段说明
 
@@ -178,7 +178,7 @@ node sync-cursor.mjs --only skills coding --force
 ## 推荐工作流
 
 1. 在 playbook 修改 `RULE.md` / `SKILL.md`，走评审与版本发布
-2. 在 `framework/cursor-script/` 执行 `npm run sync:rule` / `npm run sync:skill`（或指定 id）
+2. 在 `ai-kit-framework/cursor-script/` 执行 `npm run sync:rule` / `npm run sync:skill`（或指定 id）
 3. 将 playbook 与 `.cursor/` 变更一并提交 Git
 4. 在 Cursor Settings → Rules / Skills 确认已识别
 

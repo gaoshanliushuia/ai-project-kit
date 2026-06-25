@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 const GROUPS = ["01_req", "02_build", "03_qa", "04_change", "05_delivery", "06_gov"];
-const FRAMEWORK_DIR = "framework";
+const FRAMEWORK_DIR = "ai-kit-framework";
 const GROUP_ALIASES = {
   req: ["01_req"],
   build: ["02_build"],
@@ -150,10 +150,22 @@ function initProject(options) {
 
   const toolScripts = copyToolScripts(scriptsRoot, frameworkRoot);
 
-  const summary = [`Initialized framework at: ${frameworkRoot}`, `Initialized groups ${groups.join(", ")} at: ${targetRoot}`];
+  const summary = [
+    `Initialized ${FRAMEWORK_DIR} at: ${frameworkRoot}`,
+    `Project guide: ${path.join(frameworkRoot, "README.md")}`,
+    `Initialized groups ${groups.join(", ")} at: ${targetRoot}`,
+  ];
   if (toolScripts.length > 0) {
-    summary.push(`Initialized framework tool scripts: ${toolScripts.join(", ")}`);
+    summary.push(`Initialized ${FRAMEWORK_DIR} tool scripts: ${toolScripts.join(", ")}`);
   }
+  summary.push(
+    "",
+    "Next steps:",
+    `  npm --prefix ${path.join(FRAMEWORK_DIR, "cursor-script")} run sync:rule`,
+    `  npm --prefix ${path.join(FRAMEWORK_DIR, "cursor-script")} run sync:skill`,
+    "",
+    `Open ${FRAMEWORK_DIR}/README.md for the full onboarding guide.`
+  );
   console.log(summary.join("\n"));
 }
 

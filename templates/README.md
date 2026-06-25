@@ -2,7 +2,7 @@
 
 Version: v0.1.0
 
-这是通过 ai-project-kit 初始化后的项目入口说明。
+本文档是本项目的框架使用说明，帮助团队理解目录结构、六大工作组分工，以及在 Cursor 等 AI 开发工具中按阶段推进工作的方式。
 
 ## 项目作用
 
@@ -11,11 +11,11 @@ Version: v0.1.0
 - 帮助各角色在独立目录中并行工作，并通过阶段目录内的基线、回传、交付和治理记录完成交接与留痕。
 - 交付组独立管理面向用户验收的资产；AI 治理统一沉淀在 `06_gov`。
 
-## framework（公共区）
+## ai-kit-framework（公共区）
 
 ```text
 project-root/
-├── framework/     通用文档与脚本（README + cursor-script）
+├── ai-kit-framework/     框架说明与 cursor-script
 ├── 01_req/        需求组
 ├── 02_build/      实施组（架构 + 设计 + 代码实现 + 发布）
 ├── 03_qa/         测试与质量保证组
@@ -30,6 +30,7 @@ project-root/
 
 ```text
 项目根目录/
+├── ai-kit-framework/     框架说明（本文件）与 cursor-script
 ├── 01_req/        需求组
 ├── 02_build/      实施组（架构 + 设计 + 数据库 + 编码 + 发布）
 ├── 03_qa/         测试与质量保证组
@@ -147,7 +148,7 @@ playbook/ & workspace/
 1. 阅读本文件，确认六大组职责与交接关系。
 2. 进入对应组目录，阅读组内 `README.md`。
 3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md` 与 `.cursor/rules/*.mdc`。
-4. 如果要同步 Cursor 规则和技能，先进入 `framework/`，阅读 `framework/README.md` 与 `framework/cursor-script/README.md`。
+4. 同步 Cursor 规则与技能时，进入 `ai-kit-framework/cursor-script/`，参阅其中的 README 与 sync 命令说明。
 5. 使用 AI 时同步维护 `06_gov/workspace/01_governance/` 留痕。
 
 ## 按阶段操作指南
@@ -420,7 +421,7 @@ playbook/ & workspace/
 请不要泛化总结。请严格使用本项目当前阶段已安装的 skill，参考我给出的文件，直接生成该阶段产物，并写入对应 workspace。
 ```
 
-## 初始化具体项目建议
+## 项目初始化建议
 
 将本模板用于具体项目时，建议按六个大阶段分别创建 Git 仓库，避免需求、实施、测试、变更、交付、AI 治理的工作内容相互干扰。仓库名称建议使用“项目名 + 阶段编号”的方式，例如：
 
@@ -437,7 +438,7 @@ xxx项目_06_gov
 
 ```text
 AI工作/
-├── framework/
+├── ai-kit-framework/
 ├── xxx项目_01_req/
 ├── xxx项目_02_build/
 ├── xxx项目_03_qa/
@@ -448,13 +449,13 @@ AI工作/
 
 初始化流程建议：
 
-1. 先创建本地总工作目录，例如 `AI工作/`。
-2. 先初始化 `framework/`，把项目入口说明和脚本工具放在这里。
+1. 创建本地总工作目录，例如 `AI工作/`。
+2. 初始化 `ai-kit-framework/`，存放本说明文档与 cursor-script 等工具。
 3. 在该目录下分别创建六个阶段仓库目录。
 4. 每个阶段目录独立执行 `git init` 或绑定独立远程仓库。
 5. 按阶段复制对应的 `01_req`、`02_build`、`03_qa`、`04_change`、`05_delivery`、`06_gov` 模板内容。
-6. 进入 `framework/cursor-script/` 执行 `npm run sync:rule` 和 `npm run sync:skill`，把阶段 rule / skill 安装到当前项目。
-7. 通过阶段目录内的基线、引用记录、回传记录、交付清单和治理留痕传递阶段成果，不直接混写其他阶段仓库。
+6. 在 `ai-kit-framework/cursor-script/` 执行 `npm run sync:rule` 和 `npm run sync:skill`，安装各阶段 rule 与 skill。
+7. 通过阶段目录内的基线、引用记录、回传记录、交付清单和治理留痕传递阶段成果，各阶段仓库职责保持独立。
 
 ## 版本说明
 

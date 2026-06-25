@@ -21,8 +21,8 @@ function resolveDefaultRoot(scriptDir) {
   const parent = resolve(scriptDir, "..");
   const grandparent = resolve(scriptDir, "../..");
 
-  // framework/cursor-script → 项目根在 framework 的上一级
-  if (basename(parent) === "framework") {
+  // ai-kit-framework/cursor-script（或旧版 framework/cursor-script）→ 项目根在公共区的上一级
+  if (basename(parent) === "ai-kit-framework" || basename(parent) === "framework") {
     return grandparent;
   }
 
