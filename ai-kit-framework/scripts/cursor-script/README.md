@@ -1,6 +1,8 @@
-# Cursor Rules / Skills 同步工具
+# Cursor Rules / Skills 同步工具（IDE 适配示例）
 
-将 playbook 下的 `rules/RULE.md` 与 `skills/SKILL.md` 同步到项目根 `.cursor/rules/` 与 `.cursor/skills/`，供 Cursor Agent 使用。
+将 playbook 下的 `rules/RULE.md` 与 `skills/SKILL.md` 同步到项目根 `.cursor/rules/` 与 `.cursor/skills/`，供 **Cursor** Agent 使用。
+
+> **说明：** ai-project-kit 是 **与 IDE 无关** 的通用阶段目录框架；`playbook/` 才是标准正文源。本目录仅为 **Cursor 的一种接入方式**。使用其他开发工具时，可忽略 `.cursor/`，直接按该工具规范引用 playbook 内容。
 
 本目录 `cursor-script/` 集中存放 Cursor 相关辅助脚本、配置与 npm 命令。
 

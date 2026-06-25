@@ -2,7 +2,9 @@
 
 Version: v0.1.0
 
-本文档是本项目的框架使用说明，帮助团队理解目录结构、六大工作组分工，以及在 Cursor 等 AI 开发工具中按阶段推进工作的方式。
+本文档是本项目的框架使用说明，帮助团队理解 **通用目录结构**、六大工作组分工，以及如何在 AI 开发工具中按阶段推进工作。
+
+**与开发工具的关系：** 框架核心是 `playbook/`（阶段标准）与 `workspace/`（阶段产物），与具体 IDE 无关。本仓库附带 **Cursor 示例**：`ai-kit-framework/cursor-script/` 将 playbook 同步到 `.cursor/rules` 与 `.cursor/skills`。若你使用 Trae、Windsurf 或其他 Agent IDE，只需用同样方式把 playbook 正文接入该工具的配置目录即可，**不必使用 `.cursor/` 或 cursor-script**。
 
 ## 项目作用
 
@@ -11,11 +13,21 @@ Version: v0.1.0
 - 帮助各角色在独立目录中并行工作，并通过阶段目录内的基线、回传、交付和治理记录完成交接与留痕。
 - 交付组独立管理面向用户验收的资产；AI 治理统一沉淀在 `06_gov`。
 
+### 为什么需要目录，而不仅是多轮对话
+
+| 痛点 | 框架做法 |
+|------|----------|
+| 换会话就要重讲背景 | 结论写入 `workspace/`，对话时引用路径与 skill |
+| 材料散、定稿找不到 | 组内固定目录（inputs / baseline / 各阶段 workspace） |
+| 阶段产出留不下来 | playbook 规定产出，`workspace/` 可 Git 版本化 |
+| 多人各用各的 Prompt | 共用 playbook；基线、变更、交付清单作交接 |
+| AI 结果难当正式依据 | 基线签发 + 变更登记 + 治理留痕 |
+
 ## ai-kit-framework（公共区）
 
 ```text
 project-root/
-├── ai-kit-framework/     框架说明与 cursor-script
+├── ai-kit-framework/     框架说明与工具（含 Cursor 同步示例 cursor-script）
 ├── 01_req/        需求组
 ├── 02_build/      实施组（架构 + 设计 + 代码实现 + 发布）
 ├── 03_qa/         测试与质量保证组
@@ -30,7 +42,7 @@ project-root/
 
 ```text
 项目根目录/
-├── ai-kit-framework/     框架说明（本文件）与 cursor-script
+├── ai-kit-framework/     框架说明（本文件）与工具（含 Cursor 同步示例）
 ├── 01_req/        需求组
 ├── 02_build/      实施组（架构 + 设计 + 数据库 + 编码 + 发布）
 ├── 03_qa/         测试与质量保证组
@@ -147,13 +159,13 @@ playbook/ & workspace/
 
 1. 阅读本文件，确认六大组职责与交接关系。
 2. 进入对应组目录，阅读组内 `README.md`。
-3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md` 与 `.cursor/rules/*.mdc`。
-4. 同步 Cursor 规则与技能时，进入 `ai-kit-framework/cursor-script/`，参阅其中的 README 与 sync 命令说明。
+3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md` 与 `playbook/**/skills/SKILL.md`（标准正文源）。若使用 Cursor，同步后还可参阅 `.cursor/rules/*.mdc`。
+4. **使用 Cursor 时**：在 `ai-kit-framework/cursor-script/` 执行 sync，安装 rule 与 skill；其他工具请按该 IDE 方式接入 playbook。
 5. 使用 AI 时同步维护 `06_gov/workspace/01_governance/` 留痕。
 
 ## 按阶段操作指南
 
-下面这套说明面向 `Cursor`、`Trae`、`Windsurf` 等带 AI Agent 的开发工具。
+下面这套说明面向 **带 AI Agent 的开发工具**（如 Cursor、Trae、Windsurf）。无论哪种工具，**阶段标准均来自各组 `playbook/`**；Cursor 用户可通过 sync 生成 `.cursor/`，其他用户按各自工具接入即可。
 
 默认前提要先讲清楚：**使用者已经把本项目模板中的阶段 skill、阶段 rule、阶段 prompt 安装或接入到了当前开发工具中。** 也就是说，用户在实际对话时，通常**不需要再额外解释 rule 和 prompt 在哪里**，也不需要逐条告诉 Agent 本阶段应该遵守哪些规范；只要明确说出：
 
@@ -450,11 +462,11 @@ AI工作/
 初始化流程建议：
 
 1. 创建本地总工作目录，例如 `AI工作/`。
-2. 初始化 `ai-kit-framework/`，存放本说明文档与 cursor-script 等工具。
+2. 初始化 `ai-kit-framework/`，存放本说明文档与可选工具（如 Cursor 的 `cursor-script`）。
 3. 在该目录下分别创建六个阶段仓库目录。
 4. 每个阶段目录独立执行 `git init` 或绑定独立远程仓库。
 5. 按阶段复制对应的 `01_req`、`02_build`、`03_qa`、`04_change`、`05_delivery`、`06_gov` 模板内容。
-6. 在 `ai-kit-framework/cursor-script/` 执行 `npm run sync:rule` 和 `npm run sync:skill`，安装各阶段 rule 与 skill。
+6. **若使用 Cursor**：在 `ai-kit-framework/cursor-script/` 执行 `npm run sync:rule` 和 `npm run sync:skill`，将 playbook 安装到 `.cursor/`；其他 IDE 按各自方式接入 playbook。
 7. 通过阶段目录内的基线、引用记录、回传记录、交付清单和治理留痕传递阶段成果，各阶段仓库职责保持独立。
 
 ## 版本说明

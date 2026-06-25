@@ -6,12 +6,12 @@
   "files": [
     "ai-project-kit.js",
     "templates",
-    "scripts",
+    "ai-kit-framework",
     "README.md"
   ],
   "scripts": {
     "init": "node ai-project-kit.js",
-    "validate:sync-config": "node ai-project-kit.js .tmp/sync-validate all && node scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only rules --dry-run && node scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only skills --dry-run"
+    "validate:sync-config": "node ai-project-kit.js .tmp/sync-validate all && node ai-kit-framework/scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only rules --dry-run && node ai-kit-framework/scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only skills --dry-run"
   },
   "keywords": [
     "ai",

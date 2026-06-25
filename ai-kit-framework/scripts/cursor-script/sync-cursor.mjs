@@ -2,7 +2,7 @@
 
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { basename, dirname, join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -18,29 +18,19 @@ function resolveDefaultRoot(scriptDir) {
     return resolve(process.env.AI_PROJECT_ROOT);
   }
 
-  const parent = resolve(scriptDir, "..");
-  const grandparent = resolve(scriptDir, "../..");
-
-  // ai-kit-framework/cursor-script（或旧版 framework/cursor-script）→ 项目根在公共区的上一级
-  if (basename(parent) === "ai-kit-framework" || basename(parent) === "framework") {
-    return grandparent;
+  let dir = resolve(scriptDir);
+  for (let depth = 0; depth < 6; depth++) {
+    if (hasWorkgroupDirs(dir)) {
+      return dir;
+    }
+    const parent = resolve(dir, "..");
+    if (parent === dir) {
+      break;
+    }
+    dir = parent;
   }
 
-  // 项目根下的 cursor-script（旧布局）
-  if (hasWorkgroupDirs(parent)) {
-    return parent;
-  }
-
-  // scripts/cursor-script（ai-project-kit 维护仓库，通常配合 --root 使用）
-  if (basename(parent) === "scripts" && hasWorkgroupDirs(grandparent)) {
-    return grandparent;
-  }
-
-  if (hasWorkgroupDirs(grandparent)) {
-    return grandparent;
-  }
-
-  return parent;
+  return resolve(scriptDir, "..");
 }
 
 const DEFAULT_ROOT = resolveDefaultRoot(__dirname);

@@ -106,12 +106,7 @@ function copyTree(sourceRoot, targetRoot) {
   }
 }
 
-function buildProjectReadme(templateRoot) {
-  const readmePath = path.join(templateRoot, "README.md");
-  return fs.readFileSync(readmePath, "utf8");
-}
-
-function copyToolScripts(sourceRoot, targetRoot) {
+function copyFrameworkTools(sourceRoot, targetRoot) {
   if (!fs.existsSync(sourceRoot)) {
     return [];
   }
@@ -127,28 +122,37 @@ function copyToolScripts(sourceRoot, targetRoot) {
   return copied;
 }
 
+function initFramework(frameworkSource, frameworkTarget) {
+  if (!fs.existsSync(frameworkSource)) {
+    throw new Error(`Missing framework directory: ${frameworkSource}`);
+  }
+
+  fs.mkdirSync(frameworkTarget, { recursive: true });
+
+  const readmeSource = path.join(frameworkSource, "README.md");
+  if (!fs.existsSync(readmeSource)) {
+    throw new Error(`Missing framework README: ${readmeSource}`);
+  }
+  copyFileIfNeeded(readmeSource, path.join(frameworkTarget, "README.md"));
+
+  return copyFrameworkTools(path.join(frameworkSource, "scripts"), frameworkTarget);
+}
+
 function initProject(options) {
   const repoRoot = __dirname;
   const templateRoot = path.join(repoRoot, "templates");
-  const scriptsRoot = path.join(repoRoot, "scripts");
+  const frameworkSource = path.join(repoRoot, FRAMEWORK_DIR);
   const targetRoot = path.resolve(options.target);
   const frameworkRoot = path.join(targetRoot, FRAMEWORK_DIR);
   const groups = GROUP_ALIASES[options.group];
 
   fs.mkdirSync(targetRoot, { recursive: true });
 
-  fs.mkdirSync(frameworkRoot, { recursive: true });
-
-  const readmeTarget = path.join(frameworkRoot, "README.md");
-  if (!fs.existsSync(readmeTarget)) {
-    fs.writeFileSync(readmeTarget, buildProjectReadme(templateRoot), "utf8");
-  }
+  const toolScripts = initFramework(frameworkSource, frameworkRoot);
 
   for (const group of groups) {
     copyTree(path.join(templateRoot, group), path.join(targetRoot, group));
   }
-
-  const toolScripts = copyToolScripts(scriptsRoot, frameworkRoot);
 
   const summary = [
     `Initialized ${FRAMEWORK_DIR} at: ${frameworkRoot}`,
