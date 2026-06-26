@@ -159,7 +159,7 @@ playbook/ & workspace/
 
 1. 阅读本文件，确认六大组职责与交接关系。
 2. 进入对应组目录，阅读组内 `README.md`。
-3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md` 与 `playbook/**/skills/SKILL.md`（标准正文源）。若使用 Cursor，同步后还可参阅 `.cursor/rules/*.mdc`。
+3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md`、`playbook/**/skills/SKILL.md` 与 `playbook/**/prompts/PROMPT.md`。若使用 Cursor，执行 sync 后规则与技能安装到 `.cursor/`；prompt 仍保留在 playbook 中，可供外部 Agent 直接调用。
 4. **使用 Cursor 时**：在 `ai-kit-framework/cursor-script/` 执行 sync，安装 rule 与 skill；其他工具请按该 IDE 方式接入 playbook。
 5. 使用 AI 时同步维护 `06_gov/workspace/01_governance/` 留痕。
 
@@ -177,7 +177,7 @@ playbook/ & workspace/
 
 - `skill` 负责决定当前阶段该怎么做。
 - `rule` 负责约束当前阶段该输出什么、怎么写、放到哪里。
-- `prompt` 负责补充这个阶段的执行口径、结构和注意事项。
+- `prompt` 负责补充这个阶段的执行口径、结构和注意事项；也可以被外部 Agent 直接引用。
 
 所以在开发工具里，你真正要说清楚的，通常就是：**调用哪个具体 skill + 这个业务需求的详细说明**。如果业务说明足够具体，Agent 一般就能按该阶段的既有规则，把结果写到对应 `workspace`。
 

@@ -19,7 +19,10 @@ AI 治理统一在 `06_gov/` 维护。
 02_build/
 ├── playbook/    01_architecture、02_design、03_code、04_release
 └── workspace/
-    └── 01_architecture、02_design、03_code、04_release/
+    ├── 01_architecture/
+    ├── 02_design/    common、modules、interfaces、database
+    ├── 03_code/      01_source … 06_runtime
+    └── 04_release/
 ```
 
 ## 协作

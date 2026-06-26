@@ -17,6 +17,8 @@ AI 治理统一在 `06_gov/` 维护。
 ├── playbook/
 │   └── 01_change/
 └── workspace/
+    ├── README.md
+    └── 01_change/
 ```
 
 ## 协作

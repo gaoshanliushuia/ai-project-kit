@@ -2,6 +2,8 @@
 
 将 playbook 下的 `rules/RULE.md` 与 `skills/SKILL.md` 同步到项目根 `.cursor/rules/` 与 `.cursor/skills/`，供 **Cursor** Agent 使用。
 
+各阶段 `prompts/PROMPT.md` 保持为独立 playbook 入口，不同步到 `.cursor/skills/`；这样外部 Agent 或其他 IDE 可以直接调用同一份 prompt。
+
 > **说明：** ai-project-kit 是 **与 IDE 无关** 的通用阶段目录框架；`playbook/` 才是标准正文源。本目录仅为 **Cursor 的一种接入方式**。使用其他开发工具时，可忽略 `.cursor/`，直接按该工具规范引用 playbook 内容。
 
 本目录 `cursor-script/` 集中存放 Cursor 相关辅助脚本、配置与 npm 命令。
@@ -163,7 +165,7 @@ node sync-cursor.mjs --only skills coding --force
 
 ### 新增 skill
 
-1. 在 playbook 创建 `skills/SKILL.md`（或子目录下的 `SKILL.md`）
+1. 在 playbook 创建 `skills/SKILL.md`
 2. 在 `sync-cursor.config.json` 的 `skills` 数组增加一条
 3. 执行 `npm run sync:skill -- <新id>`
 

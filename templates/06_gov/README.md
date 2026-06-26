@@ -33,4 +33,4 @@ AI 治理组服务于 `01_req`、`02_build`、`03_qa`、`04_change`、`05_delive
 1. 本文件
 2. `playbook/01_governance/README.md`
 3. `playbook/01_governance/rules/RULE.md`
-4. `.cursor/rules/governance.mdc`
+4. 若使用 Cursor 并已 sync：`.cursor/rules/governance.mdc`；其他 IDE 请接入同路径 playbook 规则

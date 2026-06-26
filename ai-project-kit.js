@@ -165,10 +165,15 @@ function initProject(options) {
   summary.push(
     "",
     "Next steps:",
-    `  npm --prefix ${path.join(FRAMEWORK_DIR, "cursor-script")} run sync:rule`,
-    `  npm --prefix ${path.join(FRAMEWORK_DIR, "cursor-script")} run sync:skill`,
+    `  1. Open ${FRAMEWORK_DIR}/README.md for the full onboarding guide`,
+    "  2. Place raw materials in 01_req/workspace/01_inputs/",
+    "  3. Use each group's playbook + workspace/ for stage deliverables",
     "",
-    `Open ${FRAMEWORK_DIR}/README.md for the full onboarding guide.`
+    "  If using Cursor (optional):",
+    `    npm --prefix ${path.join(FRAMEWORK_DIR, "cursor-script")} run sync:rule`,
+    `    npm --prefix ${path.join(FRAMEWORK_DIR, "cursor-script")} run sync:skill`,
+    "",
+    "  Other IDEs: map playbook/**/rules and skills to your Agent config (see ai-kit-framework README)."
   );
   console.log(summary.join("\n"));
 }
