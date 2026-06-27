@@ -191,7 +191,7 @@
       "source": "06_gov/playbook/01_governance/skills/SKILL.md",
       "target": ".cursor/skills/govern/SKILL.md",
       "name": "govern",
-      "description": "Executes the AI 使用治理与质量约束 phase workflow: AI usage logging, prompt review, security checks, output acceptance, metrics, and retrospective (GOV prefix). Use when working in 06_gov/**, or when the user mentions AI governance, GOV artifacts, prompt review, AI audit, or compliance checks.",
+      "description": "Executes the AI 使用治理与质量约束 phase workflow: AI usage logging, agent review, security checks, output acceptance, metrics, and retrospective (GOV prefix). Use when working in 06_gov/**, or when the user mentions AI governance, GOV artifacts, agent review, AI audit, or compliance checks.",
       "governanceRule": "governance",
       "ruleSource": "06_gov/playbook/01_governance/rules/RULE.md",
       "playbookBase": "06_gov/playbook/01_governance"

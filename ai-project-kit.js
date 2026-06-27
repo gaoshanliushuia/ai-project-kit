@@ -122,6 +122,15 @@ function copyFrameworkTools(sourceRoot, targetRoot) {
   return copied;
 }
 
+function copyFrameworkDirectoryIfExists(frameworkSource, frameworkTarget, name) {
+  const source = path.join(frameworkSource, name);
+  if (!fs.existsSync(source)) {
+    return false;
+  }
+  copyTree(source, path.join(frameworkTarget, name));
+  return true;
+}
+
 function initFramework(frameworkSource, frameworkTarget) {
   if (!fs.existsSync(frameworkSource)) {
     throw new Error(`Missing framework directory: ${frameworkSource}`);
@@ -135,7 +144,11 @@ function initFramework(frameworkSource, frameworkTarget) {
   }
   copyFileIfNeeded(readmeSource, path.join(frameworkTarget, "README.md"));
 
-  return copyFrameworkTools(path.join(frameworkSource, "scripts"), frameworkTarget);
+  const copied = copyFrameworkTools(path.join(frameworkSource, "scripts"), frameworkTarget);
+  if (copyFrameworkDirectoryIfExists(frameworkSource, frameworkTarget, "automation")) {
+    copied.push("automation");
+  }
+  return copied;
 }
 
 function initProject(options) {
@@ -160,7 +173,7 @@ function initProject(options) {
     `Initialized groups ${groups.join(", ")} at: ${targetRoot}`,
   ];
   if (toolScripts.length > 0) {
-    summary.push(`Initialized ${FRAMEWORK_DIR} tool scripts: ${toolScripts.join(", ")}`);
+    summary.push(`Initialized ${FRAMEWORK_DIR} tools: ${toolScripts.join(", ")}`);
   }
   summary.push(
     "",

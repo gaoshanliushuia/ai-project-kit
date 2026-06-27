@@ -1,6 +1,6 @@
 ﻿# ai-project-kit
 
-`ai-project-kit` 是一个面向 **AI 辅助软件研发全过程** 的 **通用项目目录与阶段标准框架**。它提供可初始化的目录结构、各阶段 playbook（rules、skills、prompts），帮助团队把「用 AI 做项目」从散落的 Prompt 实验，变成 **可协作、可留痕、可演进** 的工程方法。
+`ai-project-kit` 是一个面向 **AI 辅助软件研发全过程** 的 **通用项目目录与阶段标准框架**。它提供可初始化的目录结构、各阶段 playbook（rules、skills、agents），帮助团队把「用 AI 做项目」从零散的 Agent 调用和对话实验，变成 **可协作、可留痕、可演进** 的工程方法。
 
 框架本身 **不绑定某一 IDE 或 AI 工具**；本仓库以 **Cursor** 为例，提供 playbook → `.cursor/` 的同步脚本，其他工具可按同样思路接入 playbook 正文。
 
@@ -17,8 +17,8 @@
 | **多轮对话，上下文难续** | 新开窗口要重讲背景；前几轮结论 Agent 记不住，同类问题反复解释 | 按阶段选用 skill；关键结论写入 `workspace/` 固定路径，下次对话直接引用文档而非重述全文 |
 | **内容零散，找不到依据** | 讨论散在聊天、个人笔记、临时文件里，评审时说不清「定稿在哪」 | 六大工作组 + 组内目录约定（如 inputs → baseline → 设计/代码），材料有固定位置与命名 |
 | **阶段成果难积累** | 产出只留在对话里，无法版本化、难对比迭代、交接时靠截图或复制 | `playbook/` 定义每阶段产出标准，`workspace/` 沉淀可 Git 管理的阶段资产 |
-| **多人协作口径不一** | 每人 Prompt 不同，设计、开发、测试对「已确认需求」理解不一致 | 统一 playbook 与短 skill 名；需求基线、变更记录、交付清单作为组间正式交接物 |
-| **AI 输出难当正式结论** | 生成即采纳，谁签发、谁负责说不清 | 需求须 **基线签发**；变更独立登记；治理组对 Prompt 使用与人工复核留痕 |
+| **多人协作口径不一** | 每人调用 Agent 的方式不同，设计、开发、测试对「已确认需求」理解不一致 | 统一 playbook 与短 skill 名；需求基线、变更记录、交付清单作为组间正式交接物 |
+| **AI 输出难当正式结论** | 生成即采纳，谁签发、谁负责说不清 | 需求须 **基线签发**；变更独立登记；治理组对 AI 使用与人工复核留痕 |
 | **越界改动，影响难追溯** | 在错误阶段改代码或改需求，事后不知道动了什么、为什么动 | 阶段 rule 约束读写边界；`04_change` 登记正式变更，与基线、交付可追溯 |
 
 概括来说：**对话负责推进，目录与 playbook 负责沉淀**——把「这次聊出了什么」变成「这个项目里有什么、谁确认过、下游该读哪一份」。
@@ -40,9 +40,9 @@
 
 ## 设计思想
 
-### 框架，而不是 Prompt 集合
+### 框架，而不是零散 Agent 配置
 
-很多团队用 AI 做项目的起点，是一堆 Prompt 或对话技巧。这种方式上手快，但难以复用、交接和审计。
+很多团队用 AI 做项目的起点，是一堆 Agent 配置或对话技巧。这种方式上手快，但难以复用、交接和审计。
 
 `ai-project-kit` 的定位是 **AI Project Framework**：
 
@@ -51,7 +51,7 @@
 - **skill / rule** — 让 Agent 知道当前阶段该执行什么、遵守什么
 - **workspace** — 沉淀可评审、可追踪的项目资产
 
-Prompt 仍然有用，但它是阶段标准的一部分，而不是项目的全部基础设施。
+Agent 执行说明仍然有用，但它是阶段标准的一部分，而不是项目的全部基础设施。
 
 ### 阶段边界先于工具技巧
 
@@ -65,10 +65,20 @@ Prompt 仍然有用，但它是阶段标准的一部分，而不是项目的全�
 
 | 层级 | 位置 | 作用 |
 |------|------|------|
-| 标准源 | `playbook/` 下的 rules、skills、prompts | 可评审、可 Git 管理、可迭代；**与具体 IDE 无关** |
+| 标准源 | `playbook/` 下的 rules、skills、agents | 可评审、可 Git 管理、可迭代；**与具体 IDE 无关** |
 | 运行时 | 各工具约定目录（如 Cursor 的 `.cursor/rules`、`.cursor/skills`） | 供 Agent IDE 读取；由同步脚本或团队自行映射 |
 
 **playbook 是唯一正文来源**；`.cursor/` 等目录只是「当前工具如何加载这些标准」的运行时镜像，并非框架核心。以 Cursor 为例：修改 playbook 后执行 sync，Agent 行为才会更新——**标准讨论与 IDE 配置维护解耦**，团队只需维护一套 playbook；Trae、Windsurf 等工具可沿用同一 playbook，按各自规则目录或接入方式加载。
+
+### 三种执行方式
+
+| 方式 | 适用场景 | 接入方式 |
+|------|----------|----------|
+| IDE Agent 模式 | Cursor、Trae、Windsurf 等带 Agent 的 IDE | 将 `playbook/**/rules` 与 `playbook/**/skills` 接入 IDE；Cursor 可使用 `cursor-script` 同步到 `.cursor/` |
+| 外部自动化 Agent 模式 | HermesAgent、CI Agent、自研 Agent、LangGraph / Dify / n8n 等编排工具 | 读取 `ai-kit-framework/automation/pipelines/`，按阶段调用 `agents/agent.md`、`rules/RULE.md`、`skills/SKILL.md`，结果写入 `workspace/` |
+| 手工 / 通用工具模式 | 不接入特定 Agent 工具，或先以文档流程试点 | 人直接阅读各阶段 `playbook/`，按目录约定沉淀产物 |
+
+无论哪种方式，正式阶段产物都写入 `workspace/`；自动化过程与关键 AI 使用记录写入 `06_gov/workspace/01_governance/`。
 
 ### AI 是参与者，不是签发者
 
@@ -76,7 +86,7 @@ Prompt 仍然有用，但它是阶段标准的一部分，而不是项目的全�
 
 - 需求组强调 **需求基线**（`req-baseline`），产出可交给下游设计的固化文档
 - 变更组独立登记正式变更，影响可追溯
-- 治理组（`06_gov`）对 Prompt 使用、人工复核、安全检查和输出验收留痕
+- 治理组（`06_gov`）对 AI 使用、人工复核、安全检查和输出验收留痕
 
 AI 提升效率；人保留责任边界。
 
@@ -110,7 +120,7 @@ AI 提升效率；人保留责任边界。
 
 **不太适合：**
 
-- 只需要几个即用 Prompt、不关心目录与阶段治理的个人实验
+- 只需要几个即用 Agent 调用、不关心目录与阶段治理的个人实验
 
 ---
 
@@ -123,6 +133,7 @@ ai-project-kit/
 ├── templates/                六大工作组模板（01_req … 06_gov）
 └── ai-kit-framework/         init 时复制到目标项目的公共区
     ├── README.md             目标项目使用说明
+    ├── automation/           外部自动化 Agent 编排示例与模板
     └── scripts/
         ├── cursor-script/    Cursor 适配：playbook → .cursor/ 同步（示例）
         └── qoder-script/     其他工具适配占位
@@ -146,6 +157,13 @@ npm --prefix ai-kit-framework/cursor-script run sync:skill
 ```
 
 使用其他 IDE 时，请按该工具的 Agent 配置方式，将各组 `playbook/**/rules` 与 `playbook/**/skills` 接入即可；目录结构与阶段标准不变。
+
+**若使用外部自动化 Agent**（如 HermesAgent），请参考：
+
+```bash
+ai-kit-framework/automation/README.md
+ai-kit-framework/automation/pipelines/requirement-to-code.yaml
+```
 
 ---
 

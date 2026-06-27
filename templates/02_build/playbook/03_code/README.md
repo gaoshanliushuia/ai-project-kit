@@ -47,7 +47,7 @@
 - 用 AI 辅助检查边界条件、异常处理和测试遗漏。
 - 用 AI 生成代码评审问题清单，但不能替代人工评审。
 
-## Prompt 使用
+## Agent 使用
 
-本阶段唯一 Prompt 入口放在 `prompts/PROMPT.md`。它同时覆盖代码阶段任务拆分、验证交接和可运行代码生成；生成代码时负责读取 `02_build/workspace/02_design/common/` 下的公共设计文件，以及 `02_build/workspace/02_design/modules/` 下的单个模块级设计与实现文档，并生成实际代码、脚本、测试和运行说明。
+本阶段唯一 Agent 入口放在 `agents/agent.md`。它同时覆盖代码阶段任务拆分、验证交接和可运行代码生成；生成代码时负责读取 `02_build/workspace/02_design/common/` 下的公共设计文件，以及 `02_build/workspace/02_design/modules/` 下的单个模块级设计与实现文档，并生成实际代码、脚本、测试和运行说明。
 

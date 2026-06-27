@@ -8,7 +8,7 @@ Version: v0.1.0
 
 ## 项目作用
 
-- 将 ai-project-kit 定位为 AI Project Framework（AI 辅助研发框架），而不是 Prompt 集合。
+- 将 ai-project-kit 定位为 AI Project Framework（AI 辅助研发框架），而不是 Agent 集合。
 - 按六大工作组划分协作边界：需求、实施、测试、变更、交付、AI 治理。
 - 帮助各角色在独立目录中并行工作，并通过阶段目录内的基线、回传、交付和治理记录完成交接与留痕。
 - 交付组独立管理面向用户验收的资产；AI 治理统一沉淀在 `06_gov`。
@@ -20,14 +20,14 @@ Version: v0.1.0
 | 换会话就要重讲背景 | 结论写入 `workspace/`，对话时引用路径与 skill |
 | 材料散、定稿找不到 | 组内固定目录（inputs / baseline / 各阶段 workspace） |
 | 阶段产出留不下来 | playbook 规定产出，`workspace/` 可 Git 版本化 |
-| 多人各用各的 Prompt | 共用 playbook；基线、变更、交付清单作交接 |
+| 多人各用各的 Agent | 共用 playbook；基线、变更、交付清单作交接 |
 | AI 结果难当正式依据 | 基线签发 + 变更登记 + 治理留痕 |
 
 ## ai-kit-framework（公共区）
 
 ```text
 project-root/
-├── ai-kit-framework/     框架说明与工具（含 Cursor 同步示例 cursor-script）
+├── ai-kit-framework/     框架说明与工具（含 Cursor 同步示例、自动化编排示例）
 ├── 01_req/        需求组
 ├── 02_build/      实施组（架构 + 设计 + 代码实现 + 发布）
 ├── 03_qa/         测试与质量保证组
@@ -55,6 +55,38 @@ project-root/
 
 - `playbook/` — 本组阶段标准
 - `workspace/` — 本组执行与沉淀区
+
+## 三种执行方式
+
+本框架不绑定某一种 AI 开发工具。目标项目初始化后，可以按团队成熟度选择以下任一方式执行。
+
+| 方式 | 适用场景 | 如何执行 |
+|------|----------|----------|
+| IDE Agent 模式 | Cursor、Trae、Windsurf 等带 Agent 的 IDE | 将各阶段 `rules`、`skills` 接入 IDE；Cursor 可执行 `ai-kit-framework/cursor-script/` 下的 sync 命令 |
+| 外部自动化 Agent 模式 | HermesAgent、CI Agent、自研 Agent、LangGraph / Dify / n8n 等流程编排 | 读取 `ai-kit-framework/automation/pipelines/`，按阶段调用 `playbook/**/agents/agent.md`、`rules/RULE.md`、`skills/SKILL.md` |
+| 手工 / 通用工具模式 | 初期试点、无固定 Agent 工具或人工主导流程 | 直接阅读各阶段 `playbook/`，按目录约定将产物写入 `workspace/` |
+
+三种方式共享同一套 playbook。区别只在于 **谁来编排执行**：IDE Agent、外部自动化工具，或人。
+
+### 外部自动化 Agent
+
+若使用 HermesAgent 这类工具，建议按以下顺序执行：
+
+1. 读取 `ai-kit-framework/automation/pipelines/requirement-to-code.yaml`。
+2. 按阶段生成 context pack，例如：
+
+```bash
+node ai-kit-framework/automation/scripts/prepare-context.mjs \
+  --pipeline ai-kit-framework/automation/pipelines/requirement-to-code.yaml \
+  --stage req-baseline \
+  --feature USER-MGMT
+```
+
+3. 将生成的 `.tmp/automation/context/<feature>/<stage>/context-pack.md` 交给外部 Agent。
+4. Agent 输出必须写入流水线声明的 `workspace/` 目录。
+5. 执行日志、人工确认点和风险记录写入 `06_gov/workspace/01_governance/automation-runs/`。
+
+自动化工具可以连续推进阶段，但需求基线、架构设计、详细设计、编码验证和交付验收建议保留人工 gate。
 
 ## 组内阶段
 
@@ -159,7 +191,7 @@ playbook/ & workspace/
 
 1. 阅读本文件，确认六大组职责与交接关系。
 2. 进入对应组目录，阅读组内 `README.md`。
-3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md`、`playbook/**/skills/SKILL.md` 与 `playbook/**/prompts/PROMPT.md`。若使用 Cursor，执行 sync 后规则与技能安装到 `.cursor/`；prompt 仍保留在 playbook 中，可供外部 Agent 直接调用。
+3. 再读该组 `playbook/README.md`，以及各阶段 `playbook/**/rules/RULE.md`、`playbook/**/skills/SKILL.md` 与 `playbook/**/agents/agent.md`。若使用 Cursor，执行 sync 后规则与技能安装到 `.cursor/`；agent 仍保留在 playbook 中，可供外部 Agent 直接调用。
 4. **使用 Cursor 时**：在 `ai-kit-framework/cursor-script/` 执行 sync，安装 rule 与 skill；其他工具请按该 IDE 方式接入 playbook。
 5. 使用 AI 时同步维护 `06_gov/workspace/01_governance/` 留痕。
 
@@ -167,7 +199,7 @@ playbook/ & workspace/
 
 下面这套说明面向 **带 AI Agent 的开发工具**（如 Cursor、Trae、Windsurf）。无论哪种工具，**阶段标准均来自各组 `playbook/`**；Cursor 用户可通过 sync 生成 `.cursor/`，其他用户按各自工具接入即可。
 
-默认前提要先讲清楚：**使用者已经把本项目模板中的阶段 skill、阶段 rule、阶段 prompt 安装或接入到了当前开发工具中。** 也就是说，用户在实际对话时，通常**不需要再额外解释 rule 和 prompt 在哪里**，也不需要逐条告诉 Agent 本阶段应该遵守哪些规范；只要明确说出：
+默认前提要先讲清楚：**使用者已经把本项目模板中的阶段 skill、阶段 rule、阶段 agent 安装或接入到了当前开发工具中。** 也就是说，用户在实际对话时，通常**不需要再额外解释 rule 和 agent 在哪里**，也不需要逐条告诉 Agent 本阶段应该遵守哪些规范；只要明确说出：
 
 1. 这次要调用哪个阶段的 skill。
 2. 要参考哪些业务材料、基线文档、设计文档或代码资料。
@@ -177,7 +209,7 @@ playbook/ & workspace/
 
 - `skill` 负责决定当前阶段该怎么做。
 - `rule` 负责约束当前阶段该输出什么、怎么写、放到哪里。
-- `prompt` 负责补充这个阶段的执行口径、结构和注意事项；也可以被外部 Agent 直接引用。
+- `agent` 负责补充这个阶段的执行口径、结构和注意事项；也可以被外部 Agent 直接引用。
 
 所以在开发工具里，你真正要说清楚的，通常就是：**调用哪个具体 skill + 这个业务需求的详细说明**。如果业务说明足够具体，Agent 一般就能按该阶段的既有规则，把结果写到对应 `workspace`。
 
@@ -192,7 +224,7 @@ playbook/ & workspace/
 如果你想让 Agent 输出得更稳一些，可以再补一句：
 
 ```text
-请按本项目当前阶段已安装的 skill、rule、prompt 执行，输出到对应 workspace，并区分已确认、假设、待确认。
+请按本项目当前阶段已安装的 skill、rule、agent 执行，输出到对应 workspace，并区分已确认、假设、待确认。
 ```
 
 下面统一用“人员管理”举例。这里的“人员管理”可以包括员工入职、员工转岗、员工离职、组织架构维护、岗位维护、人员状态变更、人员查询与导出等内容。
@@ -406,7 +438,7 @@ playbook/ & workspace/
 
 ### AI 治理阶段
 
-只要 AI 参与了需求、设计、代码、测试、发布、交付中的任一活动，就可以在这个阶段补充治理记录，沉淀 Prompt 使用、人工复核、安全检查和输出验收证据。
+只要 AI 参与了需求、设计、代码、测试、发布、交付中的任一活动，就可以在这个阶段补充治理记录，沉淀 Agent 使用、人工复核、安全检查和输出验收证据。
 
 以“人员管理”为例，AI 治理阶段关注的不是业务功能本身，而是：
 
@@ -422,7 +454,7 @@ playbook/ & workspace/
 ```
 
 ```text
-请使用 govern skill，参考 @06_gov/workspace/01_governance/ 和 @人工确认记录/人员管理人工复核记录.md，补齐本次版本的 Prompt 审查、安全检查、人工确认和输出验收记录。
+请使用 govern skill，参考 @06_gov/workspace/01_governance/ 和 @人工确认记录/人员管理人工复核记录.md，补齐本次版本的 Agent 审查、安全检查、人工确认和输出验收记录。
 ```
 
 ### 一条简单经验

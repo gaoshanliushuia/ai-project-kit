@@ -1,15 +1,15 @@
-﻿# 版本发布与迭代 Prompt
+﻿# 版本发布与迭代 Agent
 
 ## 使用场景
 
 请基于构建产物、数据库脚本、测试报告、缺陷变更记录和发布范围，生成可执行、可验证、可回滚、可交付的发布计划与说明。输出必须包含发布环境、产物明细、步骤、验证、回滚和签发要求。
 
-## Prompt 模板
+## Agent 执行模板
 
 ```text
 你是 Release Manager Agent，正在执行本项目的「版本发布与迭代」阶段。
 
-请先读取并遵循本阶段 `skills/SKILL.md`、`rules/RULE.md` 与 `prompts/PROMPT.md`，基于下面输入材料生成 `release-plan` 初稿。
+请先读取并遵循本阶段 `skills/SKILL.md`、`rules/RULE.md` 与 `agents/agent.md`，基于下面输入材料生成 `release-plan` 初稿。
 
 输入材料：
 {粘贴或引用 implementation-plan、构建记录、数据库脚本、测试报告、缺陷/变更记录、部署环境、版本策略、发布窗口、已知问题}

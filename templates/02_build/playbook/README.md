@@ -32,7 +32,7 @@ AI 治理见 `06_gov/playbook/01_governance/`。
 - 所有产出必须能追踪到 REQ 编号。
 - 只引用需求组已确认的需求基线，并在对应阶段目录记录来源版本。
 - 开发实现计划和数据库设计由 `02_design` 阶段生成，公共文件合并放入 `02_build/workspace/02_design/common/`，模块级实现说明放入 `02_build/workspace/02_design/modules/`，数据库设计、ER 图、脚本和回滚说明放入 `02_build/workspace/02_design/database/`。
-- 代码阶段 Prompt 由 `03_code` 阶段维护，统一放入 `02_build/playbook/03_code/prompts/PROMPT.md`，同时覆盖任务拆分、验证交接和可运行代码生成。
+- 代码阶段 Agent 由 `03_code` 阶段维护，统一放入 `02_build/playbook/03_code/agents/agent.md`，同时覆盖任务拆分、验证交接和可运行代码生成。
 - `03_code` 工作区只保存源码、脚本、构建、测试、评审和运行材料，不保存实现计划文档。
 - 发布阶段需要向 `05_delivery` 输出可验收、可移交、可运维的交付基线。
 - AI 留痕写入 `06_gov/workspace/`。

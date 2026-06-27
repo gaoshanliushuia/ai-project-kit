@@ -2,7 +2,7 @@
 
 将 playbook 下的 `rules/RULE.md` 与 `skills/SKILL.md` 同步到项目根 `.cursor/rules/` 与 `.cursor/skills/`，供 **Cursor** Agent 使用。
 
-各阶段 `prompts/PROMPT.md` 保持为独立 playbook 入口，不同步到 `.cursor/skills/`；这样外部 Agent 或其他 IDE 可以直接调用同一份 prompt。
+各阶段 `agents/agent.md` 保持为独立 playbook 入口，不同步到 `.cursor/skills/`；这样外部 Agent 或其他 IDE 可以直接调用同一份 agent。
 
 > **说明：** ai-project-kit 是 **与 IDE 无关** 的通用阶段目录框架；`playbook/` 才是标准正文源。本目录仅为 **Cursor 的一种接入方式**。使用其他开发工具时，可忽略 `.cursor/`，直接按该工具规范引用 playbook 内容。
 

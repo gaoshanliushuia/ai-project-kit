@@ -1,0 +1,104 @@
+pipeline: requirement-to-code
+description: From business input to requirement baseline, design, code, testing, delivery, and governance records.
+
+stages:
+  - id: req-baseline
+    name: 需求基线
+    skill: 01_req/playbook/01_requirements/skills/SKILL.md
+    rule: 01_req/playbook/01_requirements/rules/RULE.md
+    agent: 01_req/playbook/01_requirements/agents/agent.md
+    inputs:
+      - 01_req/workspace/01_inputs/
+    outputs:
+      - 01_req/workspace/03_baseline/
+    gate: human_signoff_required
+
+  - id: architecture
+    name: 架构设计
+    skill: 02_build/playbook/01_architecture/skills/SKILL.md
+    rule: 02_build/playbook/01_architecture/rules/RULE.md
+    agent: 02_build/playbook/01_architecture/agents/agent.md
+    inputs:
+      - 01_req/workspace/03_baseline/
+    outputs:
+      - 02_build/workspace/01_architecture/
+    gate: architecture_review_required
+
+  - id: design
+    name: 详细设计
+    skill: 02_build/playbook/02_design/skills/SKILL.md
+    rule: 02_build/playbook/02_design/rules/RULE.md
+    agent: 02_build/playbook/02_design/agents/agent.md
+    inputs:
+      - 01_req/workspace/03_baseline/
+      - 02_build/workspace/01_architecture/
+    outputs:
+      - 02_build/workspace/02_design/
+    gate: design_review_required
+
+  - id: coding
+    name: 代码实现
+    skill: 02_build/playbook/03_code/skills/SKILL.md
+    rule: 02_build/playbook/03_code/rules/RULE.md
+    agent: 02_build/playbook/03_code/agents/agent.md
+    inputs:
+      - 01_req/workspace/03_baseline/
+      - 02_build/workspace/01_architecture/
+      - 02_build/workspace/02_design/
+    outputs:
+      - 02_build/workspace/03_code/
+    gate: build_and_test_required
+
+  - id: testing
+    name: 测试与质量保证
+    skill: 03_qa/playbook/01_testing/skills/SKILL.md
+    rule: 03_qa/playbook/01_testing/rules/RULE.md
+    agent: 03_qa/playbook/01_testing/agents/agent.md
+    inputs:
+      - 01_req/workspace/03_baseline/
+      - 02_build/workspace/02_design/
+      - 02_build/workspace/03_code/
+    outputs:
+      - 03_qa/workspace/01_testing/
+    gate: quality_report_required
+
+  - id: change
+    name: 变更管理
+    skill: 04_change/playbook/01_change/skills/SKILL.md
+    rule: 04_change/playbook/01_change/rules/RULE.md
+    agent: 04_change/playbook/01_change/agents/agent.md
+    inputs:
+      - 01_req/workspace/03_baseline/
+      - 02_build/workspace/
+      - 03_qa/workspace/
+    outputs:
+      - 04_change/workspace/01_change/
+    gate: change_approval_when_needed
+
+  - id: delivery
+    name: 交付与验收
+    skill: 05_delivery/playbook/01_delivery/skills/SKILL.md
+    rule: 05_delivery/playbook/01_delivery/rules/RULE.md
+    agent: 05_delivery/playbook/01_delivery/agents/agent.md
+    inputs:
+      - 02_build/workspace/04_release/
+      - 03_qa/workspace/01_testing/
+      - 04_change/workspace/01_change/
+    outputs:
+      - 05_delivery/workspace/01_delivery/
+    gate: acceptance_required
+
+  - id: governance
+    name: AI 治理留痕
+    skill: 06_gov/playbook/01_governance/skills/SKILL.md
+    rule: 06_gov/playbook/01_governance/rules/RULE.md
+    agent: 06_gov/playbook/01_governance/agents/agent.md
+    inputs:
+      - 01_req/workspace/
+      - 02_build/workspace/
+      - 03_qa/workspace/
+      - 04_change/workspace/
+      - 05_delivery/workspace/
+    outputs:
+      - 06_gov/workspace/01_governance/
+    gate: governance_review_required

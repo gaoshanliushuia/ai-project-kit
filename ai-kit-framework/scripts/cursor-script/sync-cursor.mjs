@@ -160,7 +160,7 @@ function buildSkillUsageSection(entry) {
     `- 本阶段治理约束见 \`.cursor/rules/${entry.governanceRule}.mdc\`；正式文档源见 \`${entry.ruleSource}\`。`,
     "- 所有结论必须能追踪到输入材料、编号、负责人或评审记录。",
     "- AI 生成内容只作为初稿或检查建议，关键结论必须由阶段负责人确认。",
-    `- 发现可复用经验时，应回写 \`${entry.playbookBase}/\` 下 \`rules/\`、\`skills/\` 或 \`prompts/\`，并在后续版本发布中说明。`,
+    `- 发现可复用经验时，应回写 \`${entry.playbookBase}/\` 下 \`rules/\`、\`skills/\` 或 \`agents/\`，并在后续版本发布中说明。`,
     "",
   ].join("\n");
 }
