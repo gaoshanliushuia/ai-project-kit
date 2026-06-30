@@ -146,8 +146,32 @@ ai-project-kit/
 ```bash
 npm run init <target> all          # 完整初始化
 npm run init <target> req          # 仅初始化某一工作组
+npm run init -- <target> all qtgs  # 完整初始化，并生成 qtgs01req、qtgs02build 等项目目录
 npm run init .tmp/bootstrap-test all   # 本地冒烟
 ```
+
+### 带项目前缀初始化
+
+如具体项目要求目录带项目前缀，推荐把项目码作为第三个位置参数传入：
+
+```bash
+npm run init -- ../qtgs-project_demo all qtgs
+```
+
+生成结果示例：
+
+```text
+qtgs-project_demo/
+├── ai-kit-framework/
+├── qtgs01req/
+├── qtgs02build/
+├── qtgs03qa/
+├── qtgs04change/
+├── qtgs05delivery/
+└── qtgs06gov/
+```
+
+初始化脚本也支持 `--project-prefix qtgs`，但部分 npm 环境会把该选项转成位置参数；脚本已兼容这两种传参形态。模板源仍保持通用目录；初始化后的目标项目会生成 `ai-kit-framework/project-map.yaml`，并把目标项目内 README、pipeline、playbook、sync 配置等文本引用改写为实际项目路径。
 
 **若使用 Cursor**（本仓库内置同步示例），初始化后可安装规则与技能：
 
@@ -171,8 +195,10 @@ ai-kit-framework/automation/pipelines/requirement-to-code.yaml
 
 修改 `templates/` 或 `ai-kit-framework/` 后建议：
 
-1. `npm run init .tmp/bootstrap-test all` — 验证初始化结果
-2. `npm run validate:sync-config` — 校验 sync 配置与模板路径（若改动了 playbook 映射）
+1. `npm test` — 验证默认初始化、带前缀初始化、路径改写、sync 和 context 生成。
+2. `npm run init .tmp/bootstrap-test all` — 验证默认初始化结果。
+3. `npm run init -- .tmp/bootstrap-prefix all qtgs` — 验证带项目前缀初始化结果。
+4. `npm run validate:sync-config` — 校验 sync 配置与模板路径（若改动了 playbook 映射）。
 
 ---
 

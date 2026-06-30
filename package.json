@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "init": "node ai-project-kit.js",
+    "test": "node --test tests/*.test.js",
     "validate:sync-config": "node ai-project-kit.js .tmp/sync-validate all && node ai-kit-framework/scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only rules --dry-run && node ai-kit-framework/scripts/cursor-script/sync-cursor.mjs --root .tmp/sync-validate --only skills --dry-run"
   },
   "keywords": [

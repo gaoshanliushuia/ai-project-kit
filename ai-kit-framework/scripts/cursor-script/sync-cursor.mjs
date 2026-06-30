@@ -9,7 +9,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_CONFIG_PATH = join(__dirname, "sync-cursor.config.json");
 
 function hasWorkgroupDirs(dir) {
-  return existsSync(join(dir, "01_req")) || existsSync(join(dir, "02_build"));
+  return (
+    existsSync(join(dir, "01_req")) ||
+    existsSync(join(dir, "02_build")) ||
+    existsSync(join(dir, "ai-kit-framework", "project-map.yaml"))
+  );
 }
 
 /** 推断项目根：playbook 与 .cursor 产物均相对此目录 */
@@ -104,6 +108,85 @@ function loadConfig(configPath) {
     throw new Error(`找不到配置文件: ${configPath}`);
   }
   return JSON.parse(readFileSync(configPath, "utf8"));
+}
+
+function parseProjectMap(content) {
+  const map = { groups: {} };
+  let inGroups = false;
+  let currentGroup = null;
+
+  for (const line of content.split(/\r?\n/)) {
+    if (line.trim() === "groups:") {
+      inGroups = true;
+      currentGroup = null;
+      continue;
+    }
+    if (!inGroups) {
+      continue;
+    }
+
+    const groupMatch = line.match(/^  ([A-Za-z0-9_-]+):\s*$/);
+    if (groupMatch) {
+      currentGroup = groupMatch[1];
+      map.groups[currentGroup] = {};
+      continue;
+    }
+
+    const valueMatch = line.match(/^    (template|path):\s*(.+?)\s*$/);
+    if (currentGroup && valueMatch) {
+      map.groups[currentGroup][valueMatch[1]] = valueMatch[2];
+    }
+  }
+
+  return map;
+}
+
+function loadProjectMap(root) {
+  const mapPath = join(root, "ai-kit-framework", "project-map.yaml");
+  if (!existsSync(mapPath)) {
+    return null;
+  }
+  return parseProjectMap(readFileSync(mapPath, "utf8"));
+}
+
+function projectMappings(projectMap) {
+  if (!projectMap) {
+    return [];
+  }
+  return Object.values(projectMap.groups ?? {}).filter(
+    (entry) => entry.template && entry.path && entry.template !== entry.path
+  );
+}
+
+function mapProjectReferences(value, projectMap) {
+  if (typeof value !== "string") {
+    return value;
+  }
+
+  let next = value;
+  for (const entry of projectMappings(projectMap)) {
+    const pattern = new RegExp(
+      `(^|[^A-Za-z0-9_])${entry.template.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=/|\\\\|\\*\\*|\\b)`,
+      "g"
+    );
+    next = next.replace(pattern, `$1${entry.path}`);
+  }
+  return next;
+}
+
+function applyProjectMap(value, projectMap) {
+  if (!projectMap) {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => applyProjectMap(item, projectMap));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, applyProjectMap(item, projectMap)])
+    );
+  }
+  return mapProjectReferences(value, projectMap);
 }
 
 function hashContent(content) {
@@ -356,7 +439,7 @@ function main() {
     process.exit(1);
   }
 
-  const config = loadConfig(options.configPath);
+  const config = applyProjectMap(loadConfig(options.configPath), loadProjectMap(options.root));
 
   try {
     validateConfigSources(config, options.root);

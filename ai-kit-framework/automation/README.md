@@ -27,6 +27,8 @@ automation/
 4. 自动化执行记录写入 `06_gov/workspace/01_governance/automation-runs/`。
 5. 需求基线、架构评审、详细设计评审、编码验证和交付验收建议保留人工 gate。
 
+流水线文件中的 `01_req`、`02_build` 等路径是模板逻辑路径。若目标项目通过 `--project-prefix` 初始化为 `qtgs01req`、`qtgs02build` 等目录，`prepare-context.mjs` 会读取 `ai-kit-framework/project-map.yaml` 并在生成上下文时解析为项目物理路径。
+
 ## 快速开始
 
 生成某个功能某个阶段的上下文包：

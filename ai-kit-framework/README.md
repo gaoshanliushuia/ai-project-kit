@@ -36,6 +36,8 @@ project-root/
 └── 06_gov/        AI 治理组
 ```
 
+如果项目初始化时使用了项目前缀，具体项目目录可能是 `qtgs01req`、`qtgs02build` 等物理名称。初始化脚本会生成 `ai-kit-framework/project-map.yaml`，并把当前项目内 README、pipeline、playbook、sync 配置等文本引用改写为实际项目路径。
+
 ## 六大工作组
 
 项目资产按职责拆分为六个编号目录，**业务组内阶段从 `01` 重新编号**：
@@ -465,41 +467,85 @@ playbook/ & workspace/
 请不要泛化总结。请严格使用本项目当前阶段已安装的 skill，参考我给出的文件，直接生成该阶段产物，并写入对应 workspace。
 ```
 
-## 项目初始化建议
+## 项目初始化与使用
 
-将本模板用于具体项目时，建议按六个大阶段分别创建 Git 仓库，避免需求、实施、测试、变更、交付、AI 治理的工作内容相互干扰。仓库名称建议使用“项目名 + 阶段编号”的方式，例如：
+### 初始化方式
 
-```text
-xxx项目_01_req
-xxx项目_02_build
-xxx项目_03_qa
-xxx项目_04_change
-xxx项目_05_delivery
-xxx项目_06_gov
+在 `ai-project-kit` 框架仓库中执行初始化命令：
+
+```bash
+npm run init -- ../qtgs-project_demo all qtgs
 ```
 
-本地目录建议统一放在一个工作目录下，便于 AI IDE 集中管理。例如：
+其中：
+
+- `../qtgs-project_demo` 是目标项目目录。
+- `all` 表示初始化全部工作组；也可以使用 `req`、`build`、`qa`、`change`、`delivery`、`gov` 只初始化某一组。
+- `qtgs` 是项目码，会生成 `qtgs01req`、`qtgs02build` 等带项目前缀的目录。
+
+初始化结果示例：
 
 ```text
-AI工作/
+qtgs-project_demo/
 ├── ai-kit-framework/
-├── xxx项目_01_req/
-├── xxx项目_02_build/
-├── xxx项目_03_qa/
-├── xxx项目_04_change/
-├── xxx项目_05_delivery/
-└── xxx项目_06_gov/
+├── qtgs01req/
+├── qtgs02build/
+├── qtgs03qa/
+├── qtgs04change/
+├── qtgs05delivery/
+└── qtgs06gov/
 ```
 
-初始化流程建议：
+若不需要项目前缀，可以执行：
 
-1. 创建本地总工作目录，例如 `AI工作/`。
-2. 初始化 `ai-kit-framework/`，存放本说明文档与可选工具（如 Cursor 的 `cursor-script`）。
-3. 在该目录下分别创建六个阶段仓库目录。
-4. 每个阶段目录独立执行 `git init` 或绑定独立远程仓库。
-5. 按阶段复制对应的 `01_req`、`02_build`、`03_qa`、`04_change`、`05_delivery`、`06_gov` 模板内容。
-6. **若使用 Cursor**：在 `ai-kit-framework/cursor-script/` 执行 `npm run sync:rule` 和 `npm run sync:skill`，将 playbook 安装到 `.cursor/`；其他 IDE 按各自方式接入 playbook。
-7. 通过阶段目录内的基线、引用记录、回传记录、交付清单和治理留痕传递阶段成果，各阶段仓库职责保持独立。
+```bash
+npm run init -- ../demo-project all
+```
+
+此时目录保持模板默认名称，不带项目码前缀。
+
+### 路径映射
+
+初始化后会生成：
+
+```text
+ai-kit-framework/project-map.yaml
+```
+
+这份文件记录模板工作组与当前项目物理目录的映射。Cursor sync、外部自动化 context 生成、目标项目 README 和 playbook 引用都以当前项目物理目录为准。
+
+### 使用 Cursor
+
+进入初始化后的目标项目根目录，执行：
+
+```bash
+npm --prefix ai-kit-framework/cursor-script run sync:rule
+npm --prefix ai-kit-framework/cursor-script run sync:skill
+```
+
+同步后，Cursor 会从当前项目的 playbook 安装 `.cursor/rules` 与 `.cursor/skills`。如果项目使用了前缀目录，sync 脚本会读取 `ai-kit-framework/project-map.yaml` 并自动使用当前项目路径。
+
+### 使用外部自动化 Agent
+
+外部自动化工具可以读取流水线并生成上下文包：
+
+```bash
+node ai-kit-framework/automation/scripts/prepare-context.mjs \
+  --pipeline ai-kit-framework/automation/pipelines/requirement-to-code.yaml \
+  --stage req-baseline \
+  --feature USER-MGMT
+```
+
+`prepare-context.mjs` 会读取 `ai-kit-framework/project-map.yaml`，把 pipeline 中的阶段路径解析到当前项目目录。Agent 输出必须写入 context pack 中声明的 `Expected Outputs`。
+
+### Git 仓库建议
+
+可以按团队治理方式选择：
+
+- 单仓模式：整个目标项目一个 Git 仓库，六个工作组目录在同一仓库中协作。
+- 多仓模式：各工作组目录独立成仓，例如 `qtgs01req`、`qtgs02build` 分别绑定不同远程仓库。
+
+无论采用哪种模式，阶段产物都写入各自 `workspace/`，阶段标准仍以各自 `playbook/` 为准。
 
 ## 版本说明
 
