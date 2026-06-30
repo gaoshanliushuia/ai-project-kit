@@ -29,6 +29,12 @@ test("initializes prefixed project directories and resolves mapped paths", () =>
   assert.match(projectMap, /code: qtgs/);
   assert.match(projectMap, /template: 01_req/);
   assert.match(projectMap, /path: qtgs01req/);
+  assert.match(projectMap, /stages:/);
+  assert.match(projectMap, /design:/);
+  assert.match(projectMap, /skill: qtgs02build\/playbook\/02_design\/skills\/SKILL\.md/);
+  assert.match(projectMap, /rule: qtgs02build\/playbook\/02_design\/rules\/RULE\.md/);
+  assert.match(projectMap, /agent: qtgs02build\/playbook\/02_design\/agents\/agent\.md/);
+  assert.match(projectMap, /workspace: qtgs02build\/workspace\/02_design\//);
 
   const projectReadme = readFileSync(
     path.join(targetRoot, "ai-kit-framework", "README.md"),
@@ -50,6 +56,27 @@ test("initializes prefixed project directories and resolves mapped paths", () =>
   );
   assert.match(codingAgent, /qtgs02build\/workspace\/02_design\/common\//);
   assert.match(codingAgent, /qtgs06gov\/workspace\//);
+
+  const designAgent = readFileSync(
+    path.join(targetRoot, "qtgs02build", "playbook", "02_design", "agents", "agent.md"),
+    "utf8"
+  );
+  assert.match(designAgent, /qtgs02build\/workspace\/02_design\/common\//);
+  assert.doesNotMatch(designAgent, /`02_build\/workspace\/02_design\//);
+
+  const designRule = readFileSync(
+    path.join(targetRoot, "qtgs02build", "playbook", "02_design", "rules", "RULE.md"),
+    "utf8"
+  );
+  assert.match(designRule, /qtgs02build\/workspace\/02_design/);
+  assert.doesNotMatch(designRule, /`02_build\/workspace\/02_design/);
+
+  const designSkill = readFileSync(
+    path.join(targetRoot, "qtgs02build", "playbook", "02_design", "skills", "SKILL.md"),
+    "utf8"
+  );
+  assert.match(designSkill, /qtgs02build\/workspace\/02_design/);
+  assert.doesNotMatch(designSkill, /`02_build\/workspace\/02_design/);
 
   const syncOutput = runNode(
     [

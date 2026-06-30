@@ -36,7 +36,7 @@ project-root/
 └── 06_gov/        AI 治理组
 ```
 
-如果项目初始化时使用了项目前缀，具体项目目录可能是 `qtgs01req`、`qtgs02build` 等物理名称。初始化脚本会生成 `ai-kit-framework/project-map.yaml`，并把当前项目内 README、pipeline、playbook、sync 配置等文本引用改写为实际项目路径。
+如果项目初始化时使用了项目前缀，具体项目目录可能是 `qtgs01req`、`qtgs02build` 等物理名称。初始化脚本会生成 `ai-kit-framework/project-map.yaml` 作为总索引，记录工作组目录和各阶段 playbook、skill、rule、agent、workspace 的实际路径，并把当前项目内 README、pipeline、playbook、sync 配置等文本引用改写为实际项目路径。
 
 ## 六大工作组
 
@@ -512,7 +512,12 @@ npm run init -- ../demo-project all
 ai-kit-framework/project-map.yaml
 ```
 
-这份文件记录模板工作组与当前项目物理目录的映射。Cursor sync、外部自动化 context 生成、目标项目 README 和 playbook 引用都以当前项目物理目录为准。
+这份文件记录两类索引：
+
+- `groups`：模板工作组与当前项目物理目录的映射。
+- `stages`：各阶段的 playbook、skill、rule、agent、workspace 实际路径。
+
+Cursor sync、外部自动化 context 生成、目标项目 README 和 playbook 引用都以当前项目物理目录为准。
 
 ### 使用 Cursor
 

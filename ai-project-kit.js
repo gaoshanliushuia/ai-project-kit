@@ -6,6 +6,71 @@ const path = require("path");
 
 const GROUPS = ["01_req", "02_build", "03_qa", "04_change", "05_delivery", "06_gov"];
 const FRAMEWORK_DIR = "ai-kit-framework";
+const STAGES = [
+  {
+    id: "req-baseline",
+    name: "需求基线",
+    group: "req",
+    playbook: "01_req/playbook/01_requirements",
+    workspace: "01_req/workspace/03_baseline/",
+  },
+  {
+    id: "architecture",
+    name: "架构设计",
+    group: "build",
+    playbook: "02_build/playbook/01_architecture",
+    workspace: "02_build/workspace/01_architecture/",
+  },
+  {
+    id: "design",
+    name: "详细设计",
+    group: "build",
+    playbook: "02_build/playbook/02_design",
+    workspace: "02_build/workspace/02_design/",
+  },
+  {
+    id: "coding",
+    name: "代码实现",
+    group: "build",
+    playbook: "02_build/playbook/03_code",
+    workspace: "02_build/workspace/03_code/",
+  },
+  {
+    id: "release",
+    name: "版本发布",
+    group: "build",
+    playbook: "02_build/playbook/04_release",
+    workspace: "02_build/workspace/04_release/",
+  },
+  {
+    id: "testing",
+    name: "测试与质量保证",
+    group: "qa",
+    playbook: "03_qa/playbook/01_testing",
+    workspace: "03_qa/workspace/01_testing/",
+  },
+  {
+    id: "change",
+    name: "变更管理",
+    group: "change",
+    playbook: "04_change/playbook/01_change",
+    workspace: "04_change/workspace/01_change/",
+  },
+  {
+    id: "delivery",
+    name: "交付与验收",
+    group: "delivery",
+    playbook: "05_delivery/playbook/01_delivery",
+    workspace: "05_delivery/workspace/01_delivery/",
+  },
+  {
+    id: "governance",
+    name: "AI 治理留痕",
+    group: "gov",
+    playbook: "06_gov/playbook/01_governance",
+    workspace: "06_gov/workspace/01_governance/",
+  },
+];
 const TEXT_EXTENSIONS = new Set([
   ".js",
   ".json",
@@ -128,11 +193,28 @@ function buildProjectMap(projectPrefix) {
       path: groupTargetName(group, projectPrefix),
     };
   }
+
+  const baseMap = { groups };
+  const stages = {};
+  for (const stage of STAGES) {
+    const playbook = rewriteProjectReferences(stage.playbook, baseMap);
+    stages[stage.id] = {
+      name: stage.name,
+      group: stage.group,
+      playbook,
+      skill: `${playbook}/skills/SKILL.md`,
+      rule: `${playbook}/rules/RULE.md`,
+      agent: `${playbook}/agents/agent.md`,
+      workspace: rewriteProjectReferences(stage.workspace, baseMap),
+    };
+  }
+
   return {
     project: {
       code: projectPrefix || "default",
     },
     groups,
+    stages,
   };
 }
 
@@ -147,6 +229,20 @@ function formatProjectMap(projectMap) {
 
   for (const [key, value] of Object.entries(projectMap.groups)) {
     lines.push(`  ${key}:`, `    template: ${value.template}`, `    path: ${value.path}`);
+  }
+
+  lines.push("", "stages:");
+  for (const [key, value] of Object.entries(projectMap.stages ?? {})) {
+    lines.push(
+      `  ${key}:`,
+      `    name: ${value.name}`,
+      `    group: ${value.group}`,
+      `    playbook: ${value.playbook}`,
+      `    skill: ${value.skill}`,
+      `    rule: ${value.rule}`,
+      `    agent: ${value.agent}`,
+      `    workspace: ${value.workspace}`
+    );
   }
 
   return `${lines.join("\n")}\n`;

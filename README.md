@@ -171,7 +171,7 @@ qtgs-project_demo/
 └── qtgs06gov/
 ```
 
-初始化脚本也支持 `--project-prefix qtgs`，但部分 npm 环境会把该选项转成位置参数；脚本已兼容这两种传参形态。模板源仍保持通用目录；初始化后的目标项目会生成 `ai-kit-framework/project-map.yaml`，并把目标项目内 README、pipeline、playbook、sync 配置等文本引用改写为实际项目路径。
+初始化脚本也支持 `--project-prefix qtgs`，但部分 npm 环境会把该选项转成位置参数；脚本已兼容这两种传参形态。模板源仍保持通用目录；初始化后的目标项目会生成 `ai-kit-framework/project-map.yaml` 作为总索引，记录工作组目录和各阶段 playbook、skill、rule、agent、workspace 的实际路径，并把目标项目内 README、pipeline、playbook、sync 配置等文本引用改写为实际项目路径。
 
 **若使用 Cursor**（本仓库内置同步示例），初始化后可安装规则与技能：
 

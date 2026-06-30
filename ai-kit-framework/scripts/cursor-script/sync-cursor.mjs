@@ -121,6 +121,10 @@ function parseProjectMap(content) {
       currentGroup = null;
       continue;
     }
+    if (inGroups && line && !line.startsWith(" ")) {
+      inGroups = false;
+      currentGroup = null;
+    }
     if (!inGroups) {
       continue;
     }
