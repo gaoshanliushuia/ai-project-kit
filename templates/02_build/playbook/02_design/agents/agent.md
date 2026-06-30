@@ -29,6 +29,7 @@
 5. `02_build/workspace/02_design/interfaces/interface-contracts-v1.0.md`：接口契约文档，集中定义接口路径、方法、请求 DTO、响应 DTO、权限、错误码和分页规则。
 6. `02_build/workspace/02_design/database/database-design-v1.0.md`：数据库设计文档，集中定义数据模型、ER 实体关系图、字段字典、约束、索引、初始化数据、迁移与回滚策略、数据质量规则、容量性能风险和数据库评审清单。
 7. `02_build/workspace/02_design/database/scripts/001_schema.sql`、`002_seed.sql`、`rollback.sql`：数据库 schema、初始化数据和回滚脚本。脚本不得创建物理外键。
+8. 第三方 Skill 使用记录（如适用）：如本次引用了本地第三方 Skill，列出 Skill 名称、触发原因、输入材料、采纳建议、未采纳建议及原因、对当前 DES/DB 编号/产物的影响、待确认事项；若未引用，明确写“未使用第三方 Skill”。
 
 每个设计文档必须包含：
 - 文档目标：说明该设计文档如何服务数据库落地、编码实现、测试设计和 AI-Agent 代码生成。
@@ -120,3 +121,4 @@
 - 是否已在 `database/` 下输出数据库设计、ER 实体关系图、字段字典、脚本、初始化数据、回滚说明和数据库评审清单。
 - 是否明确数据库脚本未创建物理外键，并通过 ER 图和 Service 层校验说明表间关系。
 - 是否明确数据库、编码、测试和发布的下游输入。
+- 若引用了第三方 Skill，是否记录使用留痕并回到本阶段主流程继续执行。

@@ -1,5 +1,5 @@
 const assert = require("node:assert/strict");
-const { execFileSync } = require("node:child_process");
+const { execFileSync, spawnSync } = require("node:child_process");
 const { existsSync, readFileSync, rmSync } = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
@@ -13,6 +13,17 @@ function runNode(args, options = {}) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });
+}
+
+function runNodeCombined(args, options = {}) {
+  const result = spawnSync(process.execPath, args, {
+    cwd: options.cwd ?? repoRoot,
+    encoding: "utf8",
+  });
+  return {
+    status: result.status,
+    output: `${result.stdout ?? ""}${result.stderr ?? ""}`,
+  };
 }
 
 test("initializes prefixed project directories and resolves mapped paths", () => {
@@ -128,4 +139,44 @@ test("accepts project prefix as third positional argument", () => {
   );
   assert.match(projectMap, /code: qtgs/);
   assert.match(projectMap, /path: qtgs01req/);
+});
+
+test("sync skips missing stage directories in partial projects", () => {
+  const partialTargetRoot = path.join(repoRoot, ".tmp", "project-prefix-partial-test");
+  rmSync(partialTargetRoot, { recursive: true, force: true });
+
+  runNode(["ai-project-kit.js", partialTargetRoot, "req", "qtgs"]);
+
+  assert.equal(existsSync(path.join(partialTargetRoot, "qtgs01req", "playbook")), true);
+  assert.equal(existsSync(path.join(partialTargetRoot, "qtgs02build")), false);
+
+  const rules = runNodeCombined(
+    [
+      "ai-kit-framework/cursor-script/sync-cursor.mjs",
+      "--root",
+      partialTargetRoot,
+      "--only",
+      "rules",
+      "--dry-run",
+    ],
+    { cwd: partialTargetRoot }
+  );
+  assert.equal(rules.status, 0);
+  assert.match(rules.output, /rule requirements -> \.cursor\/rules\/requirements\.mdc/);
+  assert.match(rules.output, /\[WARN\] rule architecture skipped: source missing/);
+
+  const skills = runNodeCombined(
+    [
+      "ai-kit-framework/cursor-script/sync-cursor.mjs",
+      "--root",
+      partialTargetRoot,
+      "--only",
+      "skills",
+      "--dry-run",
+    ],
+    { cwd: partialTargetRoot }
+  );
+  assert.equal(skills.status, 0);
+  assert.match(skills.output, /skill req-baseline -> \.cursor\/skills\/req-baseline\/SKILL\.md/);
+  assert.match(skills.output, /\[WARN\] skill architect skipped: source missing/);
 });

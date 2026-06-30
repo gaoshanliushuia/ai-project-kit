@@ -180,6 +180,8 @@ npm --prefix ai-kit-framework/cursor-script run sync:rule
 npm --prefix ai-kit-framework/cursor-script run sync:skill
 ```
 
+如果目标项目只初始化了部分工作组，sync 会安装已存在阶段的 rule / skill；缺失阶段会输出 `[WARN] ... skipped: source missing` 并继续执行，不会中断整个安装。
+
 使用其他 IDE 时，请按该工具的 Agent 配置方式，将各组 `playbook/**/rules` 与 `playbook/**/skills` 接入即可；目录结构与阶段标准不变。
 
 **若使用外部自动化 Agent**（如 HermesAgent），请参考：

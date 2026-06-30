@@ -215,6 +215,37 @@ playbook/ & workspace/
 
 所以在开发工具里，你真正要说清楚的，通常就是：**调用哪个具体 skill + 这个业务需求的详细说明**。如果业务说明足够具体，Agent 一般就能按该阶段的既有规则，把结果写到对应 `workspace`。
 
+### 阶段 Skill 与第三方 Skill 协作
+
+每个阶段的 `playbook/**/skills/SKILL.md` 是**主流程编排入口**：决定当前阶段先读哪些 rule / agent、如何检查输入、如何组织产物。若任务涉及专项能力（例如特定技术栈脚手架、专用文档模板、外部工具链），可在该 Skill 的 **「第三方 Skill 协作（预留）」** 小节中登记触发条件，并在执行时按需引用本地第三方 Skill。
+
+**分工原则：**
+
+| 类型 | 位置 | 职责 |
+|------|------|------|
+| 阶段 Skill | `playbook/**/skills/SKILL.md` | 编排本阶段主流程；sync 后安装到 `.cursor/skills/` |
+| 阶段 Rule | `playbook/**/rules/RULE.md` | 约束产物结构、编号、退出条件；sync 后安装到 `.cursor/rules/` |
+| 阶段 Agent | `playbook/**/agents/agent.md` | 提供标准输出结构与自检清单；**不同步**，保留在 playbook 供对话或外部 Agent 引用 |
+| 第三方 Skill | 项目或团队自行维护（如 `.cursor/skills/` 下其他目录） | 处理专项子任务；**不得替代**阶段主流程 |
+
+**推荐执行顺序：**
+
+1. 先激活当前阶段 Skill（例如 `design skill`）。
+2. 若任务符合该 Skill 中「第三方 Skill 协作（预留）」的触发条件，且已在项目内登记或经人工确认，再引用对应第三方 Skill。
+3. 第三方 Skill 完成后，**必须回到本阶段** `rules/RULE.md` 与 `agents/agent.md` 继续执行，并按 agent 输出结构写入 **「第三方 Skill 使用记录」**（未引用时写“未使用第三方 Skill”）。
+4. 阶段产物仍写入对应 `workspace/`，并区分已确认、假设、待确认。
+
+**项目如何配置第三方 Skill：**
+
+- 模板中各阶段 Skill 已预留空的触发场景表（场景类型 / 触发条件 / 第三方 Skill / 说明），初始化后可在目标项目的 `playbook/**/skills/SKILL.md` 中补充。
+- 第三方 Skill 本身放在 Cursor 用户级或项目级 skills 目录即可；**不需要**写入 `project-map.yaml`（该文件只索引阶段 playbook 路径）。
+- 未在阶段 Skill 中登记、且未经人工确认的第三方 Skill，不应擅自启用。
+
+**同步行为说明：**
+
+- `sync:skill` 只同步各阶段 `playbook/**/skills/SKILL.md` → `.cursor/skills/<name>/SKILL.md`，会保留 `## 第三方 Skill 协作（预留）` 正文，并追加 Cursor 专用「使用要求」。
+- 第三方 Skill 若也位于 `.cursor/skills/`，与阶段 Skill 并列存在；对话时由 Agent 按阶段 Skill 中的触发说明决定是否调用。
+
 ### 通用句式
 
 你可以直接在 Agent 对话框里使用下面这种句式：
@@ -529,6 +560,8 @@ npm --prefix ai-kit-framework/cursor-script run sync:skill
 ```
 
 同步后，Cursor 会从当前项目的 playbook 安装 `.cursor/rules` 与 `.cursor/skills`。如果项目使用了前缀目录，sync 脚本会读取 `ai-kit-framework/project-map.yaml` 并自动使用当前项目路径。
+
+如果当前项目只初始化了部分工作组，sync 会安装已存在阶段的 rule / skill；缺失阶段会输出 `[WARN] ... skipped: source missing` 并继续执行，不会中断整个安装。
 
 ### 使用外部自动化 Agent
 

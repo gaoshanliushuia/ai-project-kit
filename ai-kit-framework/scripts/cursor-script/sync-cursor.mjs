@@ -306,6 +306,10 @@ function readSource(root, relativePath) {
   return readFileSync(absolutePath, "utf8");
 }
 
+function sourceExists(root, relativePath) {
+  return existsSync(join(root, relativePath));
+}
+
 function writeTarget(root, relativePath, content, { dryRun, force, checkClean }) {
   const absolutePath = join(root, relativePath);
   const nextHash = hashContent(content);
@@ -336,10 +340,15 @@ function writeTarget(root, relativePath, content, { dryRun, force, checkClean })
 
 function syncRules(config, options) {
   const entries = filterEntries(config.rules ?? [], options.ids, "rule");
-  const summary = { created: 0, updated: 0, unchanged: 0, drift: 0, errors: [] };
+  const summary = { created: 0, updated: 0, unchanged: 0, drift: 0, skipped: 0, errors: [] };
 
   for (const entry of entries) {
     try {
+      if (!sourceExists(options.root, entry.source)) {
+        summary.skipped += 1;
+        logSkipped("rule", entry.id, entry.source);
+        continue;
+      }
       const raw = readSource(options.root, entry.source);
       const body = stripRuleBoilerplate(stripFrontmatter(raw));
       const content = buildRuleContent(entry, body);
@@ -357,11 +366,16 @@ function syncRules(config, options) {
 
 function syncSkills(config, options) {
   const entries = filterEntries(config.skills ?? [], options.ids, "skill");
-  const summary = { created: 0, updated: 0, unchanged: 0, drift: 0, errors: [] };
+  const summary = { created: 0, updated: 0, unchanged: 0, drift: 0, skipped: 0, errors: [] };
 
   for (const entry of entries) {
     try {
       validateSkillEntry(entry);
+      if (!sourceExists(options.root, entry.source)) {
+        summary.skipped += 1;
+        logSkipped("skill", entry.id, entry.source);
+        continue;
+      }
       const raw = readSource(options.root, entry.source);
       const content = buildSkillContent(entry, raw);
       const status = writeTarget(options.root, entry.target, content, options);
@@ -395,38 +409,20 @@ function logResult(kind, id, target, status, dryRun) {
   console.log(`${prefix} ${kind} ${id} -> ${target} (${status})`);
 }
 
+function logSkipped(kind, id, source) {
+  console.warn(`[WARN] ${kind} ${id} skipped: source missing (${source})`);
+}
+
 function printSummary(kind, summary, options) {
   console.log("");
   console.log(
-    `${kind} 完成: created=${summary.created}, updated=${summary.updated}, unchanged=${summary.unchanged}`
+    `${kind} 完成: created=${summary.created}, updated=${summary.updated}, unchanged=${summary.unchanged}, skipped=${summary.skipped}`
   );
   if (options.checkClean) {
     console.log(`drift=${summary.drift}`);
   }
   if (summary.errors.length > 0) {
     console.log(`errors=${summary.errors.length}`);
-  }
-}
-
-function validateConfigSources(config, root) {
-  const missing = [];
-
-  for (const entry of config.rules ?? []) {
-    if (!existsSync(join(root, entry.source))) {
-      missing.push(`rule ${entry.id}: ${entry.source}`);
-    }
-  }
-
-  for (const entry of config.skills ?? []) {
-    if (!existsSync(join(root, entry.source))) {
-      missing.push(`skill ${entry.id}: ${entry.source}`);
-    }
-  }
-
-  if (missing.length > 0) {
-    throw new Error(
-      `配置中的源文件不存在（项目根: ${root}）:\n${missing.map((item) => `- ${item}`).join("\n")}`
-    );
   }
 }
 
@@ -444,13 +440,6 @@ function main() {
   }
 
   const config = applyProjectMap(loadConfig(options.configPath), loadProjectMap(options.root));
-
-  try {
-    validateConfigSources(config, options.root);
-  } catch (error) {
-    console.error(error.message);
-    process.exit(1);
-  }
 
   let summary;
   try {
